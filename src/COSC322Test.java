@@ -1,3 +1,4 @@
+import java.util.List;
 import java.util.Map;
 
 import ygraphs.ai.smart_fox.games.GameClient;
@@ -7,17 +8,17 @@ import ygraphs.ai.smart_fox.games.GamePlayer;
  * @author yongg
  */
 public class COSC322Test extends GamePlayer{
-
     private GameClient gameClient;
-	
-    private String userName = null;
- 
+    private static String userName = "J-Money";
+    private static String passwd = "hunter2";
 	
 	/**
 	 * @param args
 	 */
+    
 	public static void main(String[] args) {				 
-		 COSC322Test player_01 = new COSC322Test(args[0], args[1]);  		 
+		 COSC322Test player_01 = new COSC322Test(userName, passwd);  	
+		 
 	}
 	
 	/**
@@ -47,6 +48,14 @@ public class COSC322Test extends GamePlayer{
 	@Override
 	public void onLogin() {
 		System.out.println("I am called because the server said I am logged in successfully");
+		listRooms();
+	}
+	
+	public void listRooms() {
+		List<String> rooms = this.gameClient.getRoomList();
+		for (String room: rooms) {
+			System.out.println(room);
+		}
 	}
 
 }
