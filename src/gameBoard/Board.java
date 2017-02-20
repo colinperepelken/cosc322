@@ -43,15 +43,15 @@ public class Board {
 		}
 
 		// Adds the Black amazons to the game.
-		addAmazon(false, indexify('a', 7));
-		addAmazon(false, indexify('d', 10));
-		addAmazon(false, indexify('g', 10));
-		addAmazon(false, indexify('j', 7));
+		addAmazon(false, chessNotationToIndex('a', 7));
+		addAmazon(false, chessNotationToIndex('d', 10));
+		addAmazon(false, chessNotationToIndex('g', 10));
+		addAmazon(false, chessNotationToIndex('j', 7));
 		// Adds the White amazons to the game
-		addAmazon(true, indexify('a', 4));
-		addAmazon(true, indexify('d', 1));
-		addAmazon(true, indexify('g', 1));
-		addAmazon(true, indexify('j', 4));
+		addAmazon(true, chessNotationToIndex('a', 4));
+		addAmazon(true, chessNotationToIndex('d', 1));
+		addAmazon(true, chessNotationToIndex('g', 1));
+		addAmazon(true, chessNotationToIndex('j', 4));
 	}
 
 	// Adds an Amazon to the board at a specific postions, true means the player
@@ -99,12 +99,12 @@ public class Board {
 		return boardState.toString();
 	}
 
-	public int indexify(int xPos, int yPos) {
+	public int cartesianToIndex(int xPos, int yPos) {
 		return (((yPos - 1) * 10) + (xPos - 1));
 
 	}
 
-	public int indexify(char xPos, int yPos) {
+	public int chessNotationToIndex(char xPos, int yPos) {
 		// Converts the char to an int (unicode conversion) A = 10, B = 11
 		// ...etc
 		int xVal = Character.getNumericValue(Character.toUpperCase(xPos));

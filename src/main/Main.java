@@ -8,7 +8,7 @@ public class Main {
 		Board board = new Board();
 		board.newGame();
 		System.out.println(board.toString());
-		board.makeMove(true, board.indexify('D', 1), board.indexify('D', 4), board.indexify('D', 7));
+		board.makeMove(true, board.chessNotationToIndex('D', 1), board.chessNotationToIndex('D', 4), board.chessNotationToIndex('D', 7));
 		System.out.println(board.toString());
 	}
 
