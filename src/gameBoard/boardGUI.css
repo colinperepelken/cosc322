@@ -23,3 +23,12 @@
 .charcoal-square{
 	-fx-background-color: -fx-charcoalcolor;
 }
+.clicked-start{
+	-fx-background-color:rgb(1,113,190);
+}
+.clicked-end{
+	-fx-background-color: rgb(255,196,0);
+}
+.clicked-arrow{
+	-fx-background-color: rgb(204,0,0);
+}

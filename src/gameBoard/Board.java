@@ -35,6 +35,7 @@ public class Board {
 		return (board[squareIndex]);
 
 	}
+
 	public char[] getBoard() {
 		return board;
 	}
@@ -72,7 +73,7 @@ public class Board {
 
 	}
 
-	public void makeMove(boolean whitePlayer, int startSquare, int endSquare, int arrowSquare) {
+	public boolean makeMove(boolean whitePlayer, int startSquare, int endSquare, int arrowSquare) {
 		if (validateMove(whitePlayer, startSquare, endSquare, arrowSquare) == true) {
 			// Adds a new amazon to the final position if the space is empty
 			addAmazon(whitePlayer, endSquare);
@@ -80,9 +81,11 @@ public class Board {
 			board[startSquare] = EMPTY;
 			// Adds the arrow to the board
 			board[arrowSquare] = ARROW;
+			return true;
 
 		} else {
 			System.out.println("Your move was not valid");
+			return false;
 		}
 
 	}
@@ -129,10 +132,6 @@ public class Board {
 
 	private boolean validateMove(boolean whitePlayer, int startIndex, int endIndex, int arrowIndex) {
 		boolean hasQueen = false;
-		boolean moveSpaceEmpty = false;
-		boolean moveValid = false;
-		boolean arrowEmpty = false;
-		boolean arrowValid = false;
 
 		// Checks to see if there is a queen in the starting position
 		if (whitePlayer == true) {
@@ -145,30 +144,18 @@ public class Board {
 			}
 		}
 
-		// Checks to see if the target position is a empty
-		if (isEmpty(endIndex)) {
-			moveSpaceEmpty = true;
-		}
+		// Checks all of the follow conditions
 
-		// Validates that the move is possible (follows queenmove rules)
-		if (isValidQueenMove(startIndex, endIndex)) {
-			moveValid = true;
-		}
-
-		// Checks if the target arrow position is empty
-		if (isEmpty(arrowIndex)) {
-			arrowEmpty = true;
-		}
-
-		// Checks to see if the arrow move is valid (starts at the new position
-		// and finishes at the arrow position)
-		if (isValidQueenMove(endIndex, arrowIndex)) {
-			arrowValid = true;
-		}
+		// 1. Checks if the starting position has a queen of the correct color in it.
+		// 2. Checks to see if the target position is a empty
+		// 3. Validates that the move is possible (follows queen-move rules)
+		// 4. Checks if the target arrow position is empty
+		// 5. Checks if the end position and arrow position are the same
+		// 6. Checks to see if the arrow move is valid (starts at the new position and finishes at the arrow position)
 
 		// Move is only valid if all conditions are met.
-		if (hasQueen == true && moveSpaceEmpty == true && moveValid == true && arrowEmpty == true
-				&& arrowValid == true) {
+		if (hasQueen == true && isEmpty(endIndex) && (isValidQueenMove(startIndex, endIndex)) && isEmpty(arrowIndex)
+				&& endIndex != arrowIndex && isValidQueenMove(endIndex, arrowIndex)) {
 			return true;
 		} else {
 			return false;
