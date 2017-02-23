@@ -35,6 +35,9 @@ public class Board {
 		return (board[squareIndex]);
 
 	}
+	public char[] getBoard() {
+		return board;
+	}
 
 	public void newGame() {
 		// Fills the entire board with EMPTY
@@ -69,18 +72,16 @@ public class Board {
 
 	}
 
-
 	public void makeMove(boolean whitePlayer, int startSquare, int endSquare, int arrowSquare) {
 		if (validateMove(whitePlayer, startSquare, endSquare, arrowSquare) == true) {
 			// Adds a new amazon to the final position if the space is empty
 			addAmazon(whitePlayer, endSquare);
 			// removes the amazon from the start square
 			board[startSquare] = EMPTY;
-			//Adds the arrow to the board
+			// Adds the arrow to the board
 			board[arrowSquare] = ARROW;
 
-		}
-		else {
+		} else {
 			System.out.println("Your move was not valid");
 		}
 
@@ -150,18 +151,17 @@ public class Board {
 		}
 
 		// Validates that the move is possible (follows queenmove rules)
-		// TEMPORARILY SET TO TRUE FOR TESTING
 		if (isValidQueenMove(startIndex, endIndex)) {
 			moveValid = true;
 		}
 
-		// Checks if the arrow position is empty
+		// Checks if the target arrow position is empty
 		if (isEmpty(arrowIndex)) {
 			arrowEmpty = true;
 		}
 
 		// Checks to see if the arrow move is valid (starts at the new position
-		// and finishes at the arrow position
+		// and finishes at the arrow position)
 		if (isValidQueenMove(endIndex, arrowIndex)) {
 			arrowValid = true;
 		}
