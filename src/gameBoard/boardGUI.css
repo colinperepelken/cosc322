@@ -5,12 +5,13 @@
 	-fx-color1: #555656;
 	-fx-color2: #eeeeec;
 }
-.custom-button {
+.sidebar-label {
     -fx-text-fill: -fx-color2;
     -fx-background-color: -fx-color1;
     -fx-padding: 1.0em 1.5em 1.0em 1.5em;
     -fx-border-insets: .5em;
     -fx-background-insets: .5em;
+    -fx-font-family: monospace;
 
 }
 .custom-text{

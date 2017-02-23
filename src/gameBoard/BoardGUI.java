@@ -40,6 +40,8 @@ public class BoardGUI extends Application {
 	Image arrowImage = new Image("arrow.png", 64, 64, true, false);
 	// Creates the activePlayer label
 	Label activePlayer = new Label("Player: White");
+	Label turnCountLabel = new Label("Turn: 1");
+	
 
 	private void makeMoveAI() {
 		// There is one problem with this implementation, the program will not
@@ -150,11 +152,7 @@ public class BoardGUI extends Application {
 			@Override
 			public void run() {
 				chessBoard.getChildren().clear();
-				if ((turnCount % 2) == 0) {
-					activePlayer.setText("Player: White");
-				} else {
-					activePlayer.setText("Player: Black");
-				}
+				
 				drawBoard(board);
 			}
 		});
@@ -164,7 +162,12 @@ public class BoardGUI extends Application {
 	}
 
 	private void drawBoard(Board gameBoard) {
-
+		if ((turnCount % 2) == 0) {
+			activePlayer.setText("Player: White");
+		} else {
+			activePlayer.setText("Player: Black");
+		}
+		turnCountLabel.setText("Turn: " + turnCount);
 		// Creates the empty game board
 		for (int rowIndex = 0; rowIndex < boardSize; rowIndex++) {
 			for (int colIndex = 0; colIndex < boardSize; colIndex++) {
@@ -265,6 +268,11 @@ public class BoardGUI extends Application {
 		VBox leftBar = new VBox();
 		leftBar.setAlignment(Pos.TOP_CENTER);
 		leftBar.getChildren().add(activePlayer);
+		leftBar.getChildren().add(turnCountLabel);
+		
+		// adds the style to the activePlayer label
+		activePlayer.getStyleClass().add("sidebar-label");
+		turnCountLabel.getStyleClass().add("sidebar-label");
 
 		// Attaches the side-bar to the main window.
 		root.setLeft(leftBar);

@@ -149,12 +149,12 @@ public class Board {
 		// 1. Checks if the starting position has a queen of the correct color in it.
 		// 2. Checks to see if the target position is a empty
 		// 3. Validates that the move is possible (follows queen-move rules)
-		// 4. Checks if the target arrow position is empty
+		// 4. Checks if the target arrow position is empty or if it is the same as the start position
 		// 5. Checks if the end position and arrow position are the same
 		// 6. Checks to see if the arrow move is valid (starts at the new position and finishes at the arrow position)
 
 		// Move is only valid if all conditions are met.
-		if (hasQueen == true && isEmpty(endIndex) && (isValidQueenMove(startIndex, endIndex)) && isEmpty(arrowIndex)
+		if (hasQueen == true && isEmpty(endIndex) && (isValidQueenMove(startIndex, endIndex)) && (isEmpty(arrowIndex) ||arrowIndex == startIndex )
 				&& endIndex != arrowIndex && isValidQueenMove(endIndex, arrowIndex)) {
 			return true;
 		} else {
