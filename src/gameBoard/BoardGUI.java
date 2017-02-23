@@ -6,16 +6,13 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-
 import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -36,108 +33,38 @@ public class BoardGUI extends Application {
 	GridPane chessBoard = new GridPane();
 	// Initializes the board data-structure
 	Board board = new Board();
+	// Sets the board size
 	final int boardSize = 10;
+	// initializes the turn counter
 	int turnCount = 0;
+	// Initializes the array that contains moves
 	int[] moves = new int[3];
+
+	// Initializes the input counter.
 	int inputs = 0;
+
+	// Loads the images
 	Image blkQueenImage = new Image("blkQueen.png", 64, 64, true, false);
 	Image whtQueenImage = new Image("whtQueen.png", 64, 64, true, false);
 	Image arrowImage = new Image("arrow.png", 64, 64, true, false);
-	// Creates the activePlayer label
+
+	// Creates the sidebar labels
 	Label activePlayer = new Label("Player: White");
 	Label turnCountLabel = new Label("Turn: 1");
-	Label turnTimerLabel = new Label("Time: 0");
-	int timer = 0;
+	Label turnTimerLabel = new Label("Time: 0s");
+	// Initializes the timer variable
+	int timer;
+
+	// Initializes the timer animation timeline
 	Timeline timeline = new Timeline(new KeyFrame(Duration.millis(1000), ae -> updateTimer()));
 
-	private void makeMoveAI() {
-		// There is one problem with this implementation, the program will not
-		// be closable without killing it until the task is complete or
-		// 30s have elapsed.
-
-		// Creates an executor that can use a maximum of 4 threads
-		ExecutorService executor = Executors.newFixedThreadPool(4);
-
-		// Submits a future to the executor
-		Future<?> future = executor.submit(new Runnable() {
-			@Override
-			// This is the code that the executor will run
-			public void run() {
-
-				// ============================================================
-				// PUT THE CODE THAT FINDS THE AI MOVE HERE
-				// THEN PASS WHAT IT RETURNS INTO THE MAKEAMOVE FUNCTION
-				// THAT IS LOCATED RIGHT BELOW THIS
-				//
-				// ============================================================
-				// 30s to execute or it literally shuts down and skips the turn
-				// ============================================================
-
-				// Gets the current player based on the turn number
-				boolean whitePlayer = false;
-				if (turnCount % 2 == 0) {
-					whitePlayer = true;
-				}
-
-				// boolean success = board.makeMove(whitePlayer, /* START
-				// POSITION */, /* END POSITION */, /*ARROW POSITION */);
-				// if(success) {
-				// turnCount++;
-				// }
-
-				// Sends an message to the UI thread saying "When you get a
-				// chance please do this"
-				// This is what updates the UI, Very Critical
-				Platform.runLater(() -> {
-					chessBoard.getChildren().clear();
-					drawBoard(board);
-					if ((turnCount % 2) == 0) {
-						activePlayer.setText("Player: White");
-					} else {
-						activePlayer.setText("Player: Black");
-					}
-				});
-			}
-		});
-		// This rejects any other commands from being sent to the executor
-		executor.shutdown();
-
-		try {
-			// Sets the amount of time the task has to execute (30s in this
-			// case)
-			future.get(30, TimeUnit.SECONDS);
-			// Handles job Interruption
-		} catch (InterruptedException e) {
-			System.out.println("job was interrupted");
-
-			// Unknown Exception Handling
-		} catch (ExecutionException e) {
-			System.out.println("caught exception: " + e.getCause());
-
-			// This is what happens when 30s has elapsed, cancels the task
-			// and prints a timeout to the console
-		} catch (TimeoutException e) {
-			future.cancel(true);
-			System.out.println("30s have elapsed, turn timeout");
-			turnCount++;
-		}
-
-		// Allows 2s for the task to timeout.
-		try {
-			if (!executor.awaitTermination(2, TimeUnit.SECONDS)) {
-				// force them to quit by interrupting
-				executor.shutdownNow();
-			}
-		} catch (InterruptedException e) {
-
-			e.printStackTrace();
-		}
-
-	}
-
 	private void updateTimer() {
-		timer++;
+
 		turnTimerLabel.setText("Time: " + timer + "s");
+		timer++;
+		if(timer>= 30) {
+			turnTimerLabel.setText("Times Up");
+		}
 
 	}
 
@@ -164,12 +91,12 @@ public class BoardGUI extends Application {
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
-
+				timeline.setCycleCount(30);
+				timeline.play();
+				timer = 1;
 				chessBoard.getChildren().clear();
 				drawBoard(board);
-				timeline.setCycleCount(29);
-				timeline.play();
-				timer = 0;
+				
 
 			}
 		});
