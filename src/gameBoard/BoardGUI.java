@@ -6,6 +6,10 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
@@ -19,6 +23,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import javafx.geometry.Pos;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -41,7 +46,9 @@ public class BoardGUI extends Application {
 	// Creates the activePlayer label
 	Label activePlayer = new Label("Player: White");
 	Label turnCountLabel = new Label("Turn: 1");
-	
+	Label turnTimerLabel = new Label("Time: 0");
+	int timer = 0;
+	Timeline timeline = new Timeline(new KeyFrame(Duration.millis(1000), ae -> updateTimer()));
 
 	private void makeMoveAI() {
 		// There is one problem with this implementation, the program will not
@@ -128,6 +135,12 @@ public class BoardGUI extends Application {
 
 	}
 
+	private void updateTimer() {
+		timer++;
+		turnTimerLabel.setText("Time: " + timer + "s");
+
+	}
+
 	private void makeMove(int start, int end, int arrow) {
 
 		Task<Void> task = new Task<Void>() {
@@ -151,9 +164,13 @@ public class BoardGUI extends Application {
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
+
 				chessBoard.getChildren().clear();
-				
 				drawBoard(board);
+				timeline.setCycleCount(29);
+				timeline.play();
+				timer = 0;
+
 			}
 		});
 
@@ -269,10 +286,12 @@ public class BoardGUI extends Application {
 		leftBar.setAlignment(Pos.TOP_CENTER);
 		leftBar.getChildren().add(activePlayer);
 		leftBar.getChildren().add(turnCountLabel);
-		
+		leftBar.getChildren().add(turnTimerLabel);
+
 		// adds the style to the activePlayer label
 		activePlayer.getStyleClass().add("sidebar-label");
 		turnCountLabel.getStyleClass().add("sidebar-label");
+		turnTimerLabel.getStyleClass().add("sidebar-label");
 
 		// Attaches the side-bar to the main window.
 		root.setLeft(leftBar);
