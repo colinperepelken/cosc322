@@ -1,11 +1,6 @@
 package gameBoard;
 
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
+
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -28,32 +23,32 @@ import javafx.scene.layout.Region;
 
 public class BoardGUI extends Application {
 	// Border Pane
-	BorderPane root = new BorderPane();
+	static BorderPane root = new BorderPane();
 	// Border Pane -> Grid Pane
-	GridPane chessBoard = new GridPane();
+	static GridPane chessBoard = new GridPane();
 	// Initializes the board data-structure
-	Board board = new Board();
+	static Board board = new Board();
 	// Sets the board size
-	final int boardSize = 10;
+	static final int boardSize = 10;
 	// initializes the turn counter
-	int turnCount = 0;
+	static int turnCount = 0;
 	// Initializes the array that contains moves
-	int[] moves = new int[3];
+	static int[] moves = new int[3];
 
 	// Initializes the input counter.
-	int inputs = 0;
+	static int inputs = 0;
 
 	// Loads the images
-	Image blkQueenImage = new Image("blkQueen.png", 64, 64, true, false);
-	Image whtQueenImage = new Image("whtQueen.png", 64, 64, true, false);
-	Image arrowImage = new Image("arrow.png", 64, 64, true, false);
+	static Image blkQueenImage = new Image("blkQueen.png", 64, 64, true, false);
+	static Image whtQueenImage = new Image("whtQueen.png", 64, 64, true, false);
+	static Image arrowImage = new Image("arrow.png", 64, 64, true, false);
 
 	// Creates the sidebar labels
-	Label activePlayer = new Label("Player: White");
-	Label turnCountLabel = new Label("Turn: 1");
-	Label turnTimerLabel = new Label("Time: 0s");
+	static Label activePlayer = new Label("Player: White");
+	static Label turnCountLabel = new Label("Turn: 1");
+	static Label turnTimerLabel = new Label("Time: 0s");
 	// Initializes the timer variable
-	int timer;
+	static int timer;
 
 	// Initializes the timer animation timeline
 	Timeline timeline = new Timeline(new KeyFrame(Duration.millis(1000), ae -> updateTimer()));
@@ -80,6 +75,8 @@ public class BoardGUI extends Application {
 				}
 
 				boolean success = board.makeMove(whitePlayer, start, end, arrow);
+				
+				// If a successful move is made, increment the turn counter by one
 				if (success == true) {
 					turnCount++;
 				}
@@ -91,10 +88,17 @@ public class BoardGUI extends Application {
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
+				// Called to make sure there are no timeline animations running in the background (mem-leak, eats CPU)
+				timeline.stop();
+				// Sets the number of a times a 1s animation to update the timer will run
 				timeline.setCycleCount(30);
+				// Starts the timer
 				timeline.play();
+				// Sets the value used to set the string to 1 (since 1 cycle of the animation will occure before updating)
 				timer = 1;
+				// Wipes the chessboard clear
 				chessBoard.getChildren().clear();
+				// Redraws a new chessboard based on the previous move
 				drawBoard(board);
 				
 
@@ -119,6 +123,9 @@ public class BoardGUI extends Application {
 				// Border Pane -> Grid Pane -> Stack Pane
 				StackPane squareContainer = new StackPane();
 				squareContainer.setId(String.valueOf(rowIndex) + String.valueOf(colIndex));
+				
+				// Adds a event handler to each square that will pass the moves into an array as they are clicked on
+				// It also gives the containers a new style based on what will occur.
 				squareContainer.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
 					@Override
@@ -151,6 +158,7 @@ public class BoardGUI extends Application {
 				// Border Pane -> Grid Pane -> Stack Pane -> Square
 				Region square = new Region();
 
+				// Reads the Board datastructure and creates the UI based on that.
 				if ((rowIndex + colIndex) % 2 == 0) {
 					square.getStyleClass().add("charcoal-square");
 					squareContainer.getChildren().add(square);
@@ -180,7 +188,7 @@ public class BoardGUI extends Application {
 				}
 				chessBoard.add(squareContainer, colIndex, rowIndex);
 
-				// The game board will only resize untill it hits this
+				// The game board will only resize until it hits this
 				// preference so
 				// make it huuuge so it will always resize.
 				square.setPrefSize(Integer.MAX_VALUE, Integer.MAX_VALUE);
@@ -198,9 +206,6 @@ public class BoardGUI extends Application {
 
 		// Draws the initial board-state
 		drawBoard(board);
-
-		// Debugging thing
-		System.out.println(chessBoard.getChildren().toString());
 
 		// Adds the chessboard to main border pane
 		root.setCenter(chessBoard);
@@ -223,6 +228,7 @@ public class BoardGUI extends Application {
 		// Attaches the side-bar to the main window.
 		root.setLeft(leftBar);
 
+		// Default window size and the root display attached to the window
 		Scene scene = new Scene(root, 1000, 800);
 
 		// Adds the Style sheet
