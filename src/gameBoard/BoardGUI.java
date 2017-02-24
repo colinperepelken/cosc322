@@ -15,6 +15,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import serverCommunications.ServerCom;
 import javafx.geometry.Pos;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -136,6 +137,7 @@ public class BoardGUI extends Application {
 	}
 
 	private class game {
+		
 		// Initializes the board data-structure
 		private Board board;
 		// Sets the board size
@@ -360,7 +362,12 @@ public class BoardGUI extends Application {
 
 	// This method basically replaces the main method
 	public void start(Stage primaryStage) {
-
+		
+		//TODO: Wrap the server connection in a thread?
+		// gets the connection to the server
+		ServerCom connection = new ServerCom("jaredhw", "hunter2");  
+		
+				
 		// Resets the board to a new game (Can be used to set players as AI or not)
 		game currentGame = new game(true, true);
 		// Resets the internal board game datastructure to a new game

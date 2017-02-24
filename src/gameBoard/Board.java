@@ -39,6 +39,7 @@ public class Board {
 	public char[] getBoard() {
 		return board;
 	}
+	
 
 	public void newGame() {
 		// Fills the entire board with EMPTY
