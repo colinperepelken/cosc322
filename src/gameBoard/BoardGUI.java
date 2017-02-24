@@ -1,6 +1,5 @@
 package gameBoard;
 
-
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -26,14 +25,6 @@ public class BoardGUI extends Application {
 	static BorderPane root = new BorderPane();
 	// Border Pane -> Grid Pane
 	static GridPane chessBoard = new GridPane();
-	// Initializes the board data-structure
-	static Board board = new Board();
-	// Sets the board size
-	static final int boardSize = 10;
-	// initializes the turn counter
-	static int turnCount = 0;
-	// Initializes the array that contains moves
-	static int[] moves = new int[3];
 
 	// Initializes the input counter.
 	static int inputs = 0;
@@ -53,32 +44,194 @@ public class BoardGUI extends Application {
 	// Initializes the timer animation timeline
 	Timeline timeline = new Timeline(new KeyFrame(Duration.millis(1000), ae -> updateTimer()));
 
+	private class player {
+		// Attributes
+		private boolean whitePlayer;
+		private boolean needsUserInput = true;
+		private int[] bestMove = new int[3];
+		private boolean moveCalcFinished = false;
+
+		// Methods
+		void computeMove() {
+			Task<Void> AIComputationTask = new Task<Void>() {
+				@Override
+				public Void call() {
+					// This will create a new thread for the AI computations so
+					// that the UI
+					// Doesn't completely freeze up.
+					// ====================================================================================================
+					// THE AI STUFF WILL GO HERE
+					// ITs RESULTS SHOULD BE PASSED TO THE makeMove(int
+					// startPos, int endPos, int arrowTarget)
+					// IT SHOULD WORK JUST FINE HOWEVER IF SOMEONE MAKES A MOVE
+					// USING THE MOUSE IT WILL BUGGER THINGS UP
+					// MIGHT ADD A "Human vs Human or Human vs AI" Thing at some
+					// point to combat this
+					// Note Make a Move auto-switches between who is making the
+					// move White then Black then White
+					// so for AI vs AI there has to be something to see who is
+					// sending the move and then maybe reject passing
+					// the move to the makeMove method.
+					// ====================================================================================================
+
+					// Results of the AI Calculations should be put into this
+					// arraw
+					// bestMove[0] = queenToMove;
+					// bestMove[1] = targetSquare;
+					// bestMove[2] = arrowSquare;
+					moveCalcFinished = true;
+
+					return null;
+				}
+			};
+
+			Platform.runLater(new Runnable() {
+				@Override
+				public void run() {
+					// Any changes that need to be made on the UI have to be
+					// passed
+					// to the UI thread in here
+				}
+			});
+			// Launches the AI computation task
+			new Thread(AIComputationTask).start();
+
+		}
+
+		public boolean isCalculated() {
+			return moveCalcFinished;
+		}
+
+		public int[] getBestMove() {
+			return bestMove;
+		}
+
+		public void setBestMove(int[] bestMove) {
+			this.bestMove = bestMove;
+		}
+
+		public boolean getWhitePlayer() {
+			return whitePlayer;
+		}
+
+		public void setWhitePlayer(boolean whitePlayer) {
+			this.whitePlayer = whitePlayer;
+		}
+
+		public boolean getNeedsUserInput() {
+			return needsUserInput;
+		}
+
+		public void setNeedsUserInput(boolean needsUserInput) {
+			this.needsUserInput = needsUserInput;
+		}
+
+		// Constructors
+		player(boolean whitePlayer, boolean isHuman) {
+			setWhitePlayer(whitePlayer);
+			setNeedsUserInput(isHuman);
+			
+		}
+
+	}
+
+	private class game {
+		// Initializes the board data-structure
+		private Board board;
+		// Sets the board size
+		final int boardSize;
+		// initializes the turn counter
+		private int turnCount;
+		// Initializes the array that contains moves
+		int[] moves;
+		private player player1;
+		private player player2;
+
+		public player getPlayer1() {
+			return player1;
+		}
+
+		public void setPlayer1(player player1) {
+			this.player1 = player1;
+		}
+
+		public player getPlayer2() {
+			return player2;
+		}
+
+		public void setPlayer2(player player2) {
+			this.player2 = player2;
+		}
+
+		public int getTurnCount() {
+			return turnCount;
+		}
+
+		public void setTurnCount(int turnCount) {
+			this.turnCount = turnCount;
+		}
+
+		public Board getBoard() {
+			return board;
+		}
+
+		public void setBoard(Board board) {
+			this.board = board;
+		}
+
+		public player getCurrentPlayer() {
+			if (turnCount % 2 == 0) {
+				return player1;
+
+			} else {
+				return player2;
+			}
+		}
+
+		// Constructors
+		game(boolean playerOneHuman, boolean playerTwoHuman) {
+			// Initializes the board data-structure
+			board = new Board();
+			// Sets the board size
+			boardSize = 10;
+			// initializes the turn counter
+			turnCount = 0;
+			// Initializes the array that contains moves
+			moves = new int[3];
+			// Launches the players
+			player1 = new player(true, playerOneHuman);
+			player2 = new player(false, playerTwoHuman);
+		}
+
+	}
+
 	private void updateTimer() {
 
 		turnTimerLabel.setText("Time: " + timer + "s");
 		timer++;
-		if(timer>= 30) {
+		if (timer > 30) {
 			turnTimerLabel.setText("Times Up");
 		}
 
 	}
 
-	private void makeMove(int start, int end, int arrow) {
+	private void makeMove(int start, int end, int arrow, game currentGame) {
 
 		Task<Void> task = new Task<Void>() {
 			@Override
 			public Void call() {
 				// Gets the current player based on the turn number
 				boolean whitePlayer = false;
-				if (turnCount % 2 == 0) {
+				if (currentGame.getTurnCount() % 2 == 0) {
 					whitePlayer = true;
 				}
 
-				boolean success = board.makeMove(whitePlayer, start, end, arrow);
-				
-				// If a successful move is made, increment the turn counter by one
+				boolean success = currentGame.getBoard().makeMove(whitePlayer, start, end, arrow);
+
+				// If a successful move is made, increment the turn counter by
+				// one
 				if (success == true) {
-					turnCount++;
+					currentGame.setTurnCount(currentGame.getTurnCount() + 1);
 				}
 
 				return null;
@@ -88,19 +241,21 @@ public class BoardGUI extends Application {
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
-				// Called to make sure there are no timeline animations running in the background (mem-leak, eats CPU)
+				// Called to make sure there are no timeline animations running
+				// in the background (mem-leak, eats CPU)
 				timeline.stop();
-				// Sets the number of a times a 1s animation to update the timer will run
+				// Sets the number of a times a 1s animation to update the timer
+				// will run
 				timeline.setCycleCount(30);
 				// Starts the timer
 				timeline.play();
-				// Sets the value used to set the string to 1 (since 1 cycle of the animation will occure before updating)
+				// Sets the value used to set the string to 1 (since 1 cycle of
+				// the animation will occure before updating)
 				timer = 1;
 				// Wipes the chessboard clear
 				chessBoard.getChildren().clear();
 				// Redraws a new chessboard based on the previous move
-				drawBoard(board);
-				
+				drawBoard(currentGame);
 
 			}
 		});
@@ -109,56 +264,61 @@ public class BoardGUI extends Application {
 
 	}
 
-	private void drawBoard(Board gameBoard) {
-		if ((turnCount % 2) == 0) {
+	private void drawBoard(game currentGame) {
+		Board gameBoard = currentGame.getBoard();
+		if (currentGame.getCurrentPlayer().getWhitePlayer()) {
 			activePlayer.setText("Player: White");
 		} else {
 			activePlayer.setText("Player: Black");
 		}
-		turnCountLabel.setText("Turn: " + turnCount);
+		turnCountLabel.setText("Turn: " + currentGame.getTurnCount());
 		// Creates the empty game board
-		for (int rowIndex = 0; rowIndex < boardSize; rowIndex++) {
-			for (int colIndex = 0; colIndex < boardSize; colIndex++) {
+		for (int rowIndex = 0; rowIndex < currentGame.boardSize; rowIndex++) {
+			for (int colIndex = 0; colIndex < currentGame.boardSize; colIndex++) {
 
 				// Border Pane -> Grid Pane -> Stack Pane
 				StackPane squareContainer = new StackPane();
 				squareContainer.setId(String.valueOf(rowIndex) + String.valueOf(colIndex));
-				
-				// Adds a event handler to each square that will pass the moves into an array as they are clicked on
-				// It also gives the containers a new style based on what will occur.
-				squareContainer.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
-					@Override
-					public void handle(MouseEvent arg0) {
-						if (inputs < 3) {
-							if (inputs == 0) {
-								squareContainer.getChildren().get(0).getStyleClass().add("clicked-start");
-							} else {
-								squareContainer.getChildren().get(0).getStyleClass().add("clicked-end");
+				// Adds a event handler to each square that will pass the moves
+				// into an array as they are clicked on
+				// It also gives the containers a new style based on what will
+				// occur.
+
+				if (currentGame.getCurrentPlayer().getNeedsUserInput()) {
+					squareContainer.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+						@Override
+						public void handle(MouseEvent arg0) {
+							if (inputs < 3) {
+								if (inputs == 0) {
+									squareContainer.getChildren().get(0).getStyleClass().add("clicked-start");
+								} else {
+									squareContainer.getChildren().get(0).getStyleClass().add("clicked-end");
+								}
+								squareContainer.getId();
+								currentGame.moves[inputs] = Integer.valueOf(squareContainer.getId());
+								System.out.println(squareContainer.getId());
+								inputs++;
+
 							}
-							squareContainer.getId();
-							moves[inputs] = Integer.valueOf(squareContainer.getId());
-							System.out.println(squareContainer.getId());
-							inputs++;
+							if (inputs >= 3) {
 
-						}
-						if (inputs >= 3) {
+								makeMove(currentGame.moves[0], currentGame.moves[1], currentGame.moves[2], currentGame);
+								inputs = 0;
 
-							makeMove(moves[0], moves[1], moves[2]);
-
-							inputs = 0;
-							drawBoard(board);
+							}
 
 						}
 
-					}
-
-				});
+					});
+				}
 
 				// Border Pane -> Grid Pane -> Stack Pane -> Square
 				Region square = new Region();
 
-				// Reads the Board datastructure and creates the UI based on that.
+				// Reads the Board datastructure and creates the UI based on
+				// that.
 				if ((rowIndex + colIndex) % 2 == 0) {
 					square.getStyleClass().add("charcoal-square");
 					squareContainer.getChildren().add(square);
@@ -201,11 +361,13 @@ public class BoardGUI extends Application {
 	// This method basically replaces the main method
 	public void start(Stage primaryStage) {
 
-		// Resets the board to a new game
-		board.newGame();
+		// Resets the board to a new game (Can be used to set players as AI or not)
+		game currentGame = new game(true, true);
+		// Resets the internal board game datastructure to a new game
+		currentGame.getBoard().newGame();
 
 		// Draws the initial board-state
-		drawBoard(board);
+		drawBoard(currentGame);
 
 		// Adds the chessboard to main border pane
 		root.setCenter(chessBoard);
