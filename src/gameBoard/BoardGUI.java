@@ -80,6 +80,9 @@ public class BoardGUI extends Application {
 					// bestMove[0] = queenToMove;
 					// bestMove[1] = targetSquare;
 					// bestMove[2] = arrowSquare;
+					
+					// 
+					
 					moveCalcFinished = true;
 
 					return null;
