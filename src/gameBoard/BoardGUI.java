@@ -368,7 +368,7 @@ public class BoardGUI extends Application {
 		
 		//TODO: Wrap the server connection in a thread?
 		// gets the connection to the server
-		ServerCom connection = new ServerCom("jaredhw", "hunter2");  
+		//ServerCom connection = new ServerCom("jaredhw", "hunter2");  
 		
 				
 		// Resets the board to a new game (Can be used to set players as AI or not)
