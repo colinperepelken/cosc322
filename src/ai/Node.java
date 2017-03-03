@@ -19,7 +19,17 @@ public class Node {
 	 * @param state The state contained in this node.
 	 */
 	public Node(Node parent, Action action, State state) {
-		
+		this.parent = parent;
+		this.action = action;
+		this.state = state;
+	}
+	
+	/**
+	 * Constructor
+	 * @param state The state contained in this node.
+	 */
+	public Node(State state) {
+		this.state = state;
 	}
 	
 	/* GETTERS AND SETTERS */
