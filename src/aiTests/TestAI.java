@@ -1,6 +1,6 @@
 package aiTests;
 
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 import java.util.List;
 
@@ -18,25 +18,14 @@ import gameBoard.Board;
  */
 public class TestAI {
 
-	@Test
-	public void testEvaluationFunction() {
-		fail("Not yet implemented");
-	}
 	
-	@Test
-	public void testHeuristicFunction() {
-		fail("Not yet implemented");
-	}
+	/*
+	 * assertEquals(expected, actual)
+	 */
 	
-	
-	@Test
-	public void testMinimaxSearch() {
-		fail("Not yet implemented");
-	}
 	
 	/*
 	 * Test heuristic mostActionsAvailable
-	 * Currently just prints out, does not assert.
 	 */
 	@Test
 	public void testMostActionsAvailable() {
@@ -44,7 +33,13 @@ public class TestAI {
 		b.newGame();
 		State s = new State(b);
 		Node n = new Node(s);
-		System.out.println(Heuristic.mostActionsAvailable(n));
+		assertEquals(640, Heuristic.mostActionsAvailable(n)); // initial state should have 640 actions available to a player
+		
+		// move a player
+		b.makeMove(true, 96, 16, 15);
+		s = new State(b);
+		n = new Node(s);
+		assertEquals(628, Heuristic.mostActionsAvailable(n)); // # actions for black should decrease after this move
 	}
 	
 	/*
@@ -58,8 +53,15 @@ public class TestAI {
 		List<Action> actions = ActionFactory.getActions(s);
 		
 		
-		for (Action a : actions) {
-			System.out.println(a.toString());
-		}
+//		for (Action a : actions) {
+//			System.out.println(a.toString());
+//		}
+		
+		// for initial state
+		assertEquals(39, actions.get(0).getQueenStartIndex());
+		assertEquals(9, actions.get(0).getQueenEndIndex());
+		assertEquals(0, actions.get(0).getArrowIndex());
+		
+		// could write tests to more thouroughly test getActions.....
 	}
 }
