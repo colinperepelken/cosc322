@@ -6,7 +6,7 @@ public class Board {
 	 * Attributes 10x10 board = 100 squares. index(0) = (1,10) index(99) =
 	 * (10,1)
 	 * 
-	 * The array indexs map to these board positions
+	 * The array indices map to these board positions
 	 */
 	// 00|01|02|03|04|05|06|07|08|09|
 	// 10|11|12|13|14|15|16|17|18|19|
@@ -125,9 +125,30 @@ public class Board {
 			return false;
 		}
 	}
+	
+	// gets first digit from index
+	public static int getRow(int index) {
+		if (index < 10) {
+			return 0;
+		} else {
+			return Integer.parseInt(Integer.toString(index).substring(0, 1));
+		}
+	}
+	
+	// gets second digit from index
+	public static int getColumn(int index) {
+		if (index < 10) {
+			return index;
+		} else {
+			return Integer.parseInt(Integer.toString(index).substring(1, 2));
+		}
+	}
 
 	private boolean isValidQueenMove(int startIndex, int endIndex) {
-		// Set to true for testing, to be completed later
+		
+		//if ()
+		
+		
 		return true;
 	}
 
