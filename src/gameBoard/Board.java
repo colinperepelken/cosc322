@@ -1,5 +1,7 @@
 package gameBoard;
 
+import java.util.List;
+
 public class Board {
 
 	/*
@@ -24,10 +26,10 @@ public class Board {
 
 	// Create final references to be used throughout, can easily be changed
 	// here.
-	final private char EMPTY = '_';
-	final private char BLACKQUEEN = 'B';
-	final private char WHITEQUEEN = 'W';
-	final private char ARROW = '+';
+	final public static char EMPTY = '_';
+	final public static char BLACKQUEEN = 'B';
+	final public static char WHITEQUEEN = 'W';
+	final public static char ARROW = '+';
 
 	// Methods
 	public char getSquare(int squareIndex) {
@@ -40,6 +42,35 @@ public class Board {
 		return board;
 	}
 	
+	/*
+	 * Return array of indices of the 4 white queens
+	 */
+	public int[] getWhiteQueens() {
+		int[] whiteQueens = new int[4];
+		
+		int counter = 0;
+		for (int i = 0; i < board.length; i++) {
+			if (board[i] == WHITEQUEEN) {
+				whiteQueens[counter] = i;
+			}
+		}
+		return whiteQueens;
+	}
+	
+	/*
+	 * Return array of indices of the 4 black queens
+	 */
+	public int[] getBlackQueens() {
+		int[] blackQueens = new int[4];
+		
+		int counter = 0;
+		for (int i = 0; i < board.length; i++) {
+			if (board[i] == BLACKQUEEN) {
+				blackQueens[counter] = i;
+			}
+		}
+		return blackQueens;
+	}
 
 	public void newGame() {
 		// Fills the entire board with EMPTY
@@ -156,7 +187,7 @@ public class Board {
 		return validRookMove || validBishopMove;
 	}
 
-	private boolean validateMove(boolean whitePlayer, int startIndex, int endIndex, int arrowIndex) {
+	public boolean validateMove(boolean whitePlayer, int startIndex, int endIndex, int arrowIndex) {
 		boolean hasQueen = false;
 
 		// Checks to see if there is a queen in the starting position
