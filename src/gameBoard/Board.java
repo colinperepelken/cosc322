@@ -143,13 +143,17 @@ public class Board {
 			return Integer.parseInt(Integer.toString(index).substring(1, 2));
 		}
 	}
-
-	private boolean isValidQueenMove(int startIndex, int endIndex) {
+	
+	/*
+	 * Returns true if queen move is valid
+	 */
+	public static boolean isValidQueenMove(int startIndex, int endIndex) {
 		
-		//if ()
+		// a queen move can be broken down into rook/bishop components for simplification
+		boolean validRookMove = getRow(startIndex) == getRow(endIndex) || getColumn(startIndex) == getColumn(endIndex);
+		boolean validBishopMove = Math.abs(getColumn(endIndex) - getColumn(startIndex)) == Math.abs(getRow(endIndex) - getRow(startIndex));
 		
-		
-		return true;
+		return validRookMove || validBishopMove;
 	}
 
 	private boolean validateMove(boolean whitePlayer, int startIndex, int endIndex, int arrowIndex) {
