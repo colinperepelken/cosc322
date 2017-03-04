@@ -52,6 +52,7 @@ public class Board {
 		for (int i = 0; i < board.length; i++) {
 			if (board[i] == WHITEQUEEN) {
 				whiteQueens[counter] = i;
+				counter++;
 			}
 		}
 		return whiteQueens;
@@ -67,6 +68,7 @@ public class Board {
 		for (int i = 0; i < board.length; i++) {
 			if (board[i] == BLACKQUEEN) {
 				blackQueens[counter] = i;
+				counter++;
 			}
 		}
 		return blackQueens;

@@ -33,13 +33,13 @@ public class TestAI {
 		b.newGame();
 		State s = new State(b);
 		Node n = new Node(s);
-		assertEquals(640, Heuristic.mostActionsAvailable(n)); // initial state should have 640 actions available to a player
+		assertEquals(2560, Heuristic.mostActionsAvailable(n)); // initial state should have 640 actions available to a player
 		
 		// move a player
 		b.makeMove(true, 96, 16, 15);
 		s = new State(b);
 		n = new Node(s);
-		assertEquals(628, Heuristic.mostActionsAvailable(n)); // # actions for black should decrease after this move
+		assertEquals(2508, Heuristic.mostActionsAvailable(n)); // # actions for black should decrease after this move
 	}
 	
 	/*
@@ -58,10 +58,10 @@ public class TestAI {
 //		}
 		
 		// for initial state
-		assertEquals(39, actions.get(0).getQueenStartIndex());
-		assertEquals(9, actions.get(0).getQueenEndIndex());
-		assertEquals(0, actions.get(0).getArrowIndex());
+		assertEquals(3, actions.get(0).getQueenStartIndex());
+		assertEquals(0, actions.get(0).getQueenEndIndex());
+		assertEquals(1, actions.get(0).getArrowIndex());
 		
-		// could write tests to more thouroughly test getActions.....
+		// could write tests to more thoroughly test getActions.....
 	}
 }
