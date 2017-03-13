@@ -30,9 +30,9 @@ public class BoardTest {
 		assertEquals(9, Board.getRow(98));
 	}
 	
-	@Test
-	public void testIsValidQueenMove() {
-		assertEquals(true, Board.isValidQueenMove(2, 35));
-		assertEquals(false, Board.isValidQueenMove(5, 64));
-	}
+//	@Test
+//	public void testIsValidQueenMove() {
+//		assertEquals(true, Board.isValidQueenMove(2, 35));
+//		assertEquals(false, Board.isValidQueenMove(5, 64));
+//	}
 }

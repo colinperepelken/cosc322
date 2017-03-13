@@ -137,7 +137,7 @@ public class Board {
 		return boardState.toString();
 	}
 
-	public int cartesianToIndex(int xPos, int yPos) {
+	public static int cartesianToIndex(int xPos, int yPos) {
 		return (((yPos - 1) * 10) + (xPos - 1));
 
 	}
@@ -180,13 +180,87 @@ public class Board {
 	/*
 	 * Returns true if queen move is valid
 	 */
-	public static boolean isValidQueenMove(int startIndex, int endIndex) {
+	public boolean isValidQueenMove(int startIndex, int endIndex) {
 		
 		// a queen move can be broken down into rook/bishop components for simplification
 		boolean validRookMove = getRow(startIndex) == getRow(endIndex) || getColumn(startIndex) == getColumn(endIndex);
 		boolean validBishopMove = Math.abs(getColumn(endIndex) - getColumn(startIndex)) == Math.abs(getRow(endIndex) - getRow(startIndex));
 		
 		return validRookMove || validBishopMove;
+	}
+	
+	/**
+	 * Checks if the rook move is blocked by another piece (along the route)
+	 * @param startIndex
+	 * @param endIndex
+	 * @return true if there is a piece in the way
+	 */
+	private boolean isRookBlocked(int startIndex, int endIndex) {
+		int i = getRow(startIndex);
+		int j = getColumn(startIndex);
+		int destRow = getRow(endIndex);
+		int destCol = getColumn(endIndex);
+		
+		while (i < destRow) {
+			i++;
+			if (getSquare(cartesianToIndex(i, j)) != '_') { // it is blocked
+				return true;
+			}
+		}
+		while (i > destRow) {
+			i--;
+			if (getSquare(cartesianToIndex(i, j)) != '_') {
+				return true;
+			}
+		}
+		while (j < destCol) {
+			j++;
+			if (getSquare(cartesianToIndex(i, j)) != '_') {
+				return true;
+			}
+		}
+		while (j > destCol) {
+			j--;
+			if (getSquare(cartesianToIndex(i, j)) != '_') {
+				return true;
+			}
+		}
+		
+		return false; // the path is not blocked
+	}
+	
+	/**
+	 * Checks if the bishop move is blocked by another piece (along the route)
+	 * @param startIndex
+	 * @param endIndex
+	 * @return true if there is a piece in the way
+	 */
+	private boolean isBishopBlocked(int startIndex, int endIndex) {
+		int i = getRow(startIndex);
+		int j = getColumn(startIndex);
+		int destRow = getRow(endIndex);
+		int destCol = getColumn(endIndex);
+		
+		while (i < destRow) {
+			i++;
+			if (j < destCol) j++;
+			else j--;
+			if (getSquare(cartesianToIndex(i, j)) != '_') {
+				return true;
+			}
+		}
+		
+		while (i > destRow) {
+			i--;
+			if (j < destCol) j++;
+			else j--;
+			if (getSquare(cartesianToIndex(i, j)) != '_') {
+				return true;
+			}
+		}
+		
+		
+		return false; // the path is not blocked
 	}
 
 	public boolean validateMove(boolean whitePlayer, int startIndex, int endIndex, int arrowIndex) {
@@ -213,12 +287,9 @@ public class Board {
 		// 6. Checks to see if the arrow move is valid (starts at the new position and finishes at the arrow position)
 
 		// Move is only valid if all conditions are met.
-		if (hasQueen == true && isEmpty(endIndex) && (isValidQueenMove(startIndex, endIndex)) && (isEmpty(arrowIndex) ||arrowIndex == startIndex )
-				&& endIndex != arrowIndex && isValidQueenMove(endIndex, arrowIndex)) {
-			return true;
-		} else {
-			return false;
-		}
+		return (hasQueen == true && isEmpty(endIndex) && (isValidQueenMove(startIndex, endIndex)) && (isEmpty(arrowIndex) ||arrowIndex == startIndex ) 
+				&& endIndex != arrowIndex && isValidQueenMove(endIndex, arrowIndex) 
+				&& !isRookBlocked(startIndex, endIndex) && !isBishopBlocked(startIndex, endIndex)); 
 
 	}
 }
