@@ -22,6 +22,7 @@ public class State {
 		char[] newArragment = this.board.getBoard().clone();
 		Board newBoard = new Board();
 		newBoard.setBoard(newArragment);
+		newBoard.makeMove(false, action.getQueenStartIndex(), action.getQueenEndIndex(), action.getArrowIndex());
 		return new State(newBoard);
 	}
 	

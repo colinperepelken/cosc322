@@ -221,11 +221,6 @@ public class Board {
 		int j = getColumn(startIndex);
 		int destRow = getRow(endIndex);
 		int destCol = getColumn(endIndex);
-		
-		System.out.println("origin row: " + i);
-		System.out.println("origin col: " +j);
-		System.out.println("dest row: " + destRow);
-		System.out.println("dest col: " + destCol);
 
 		while (i < destRow) {
 			i++;
@@ -274,7 +269,6 @@ public class Board {
 			if (j < destCol) j++;
 			else j--;
 			if (getSquare(getIndex(i, j)) != '_') {
-				System.out.println("returninafasdjfad");
 				return true;
 			}
 		}
@@ -284,7 +278,6 @@ public class Board {
 			if (j < destCol) j++;
 			else j--;
 			if (getSquare(getIndex(i, j)) != '_') {
-				System.out.println("Returning tre");
 				return true;
 			}
 		}

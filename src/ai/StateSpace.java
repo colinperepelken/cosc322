@@ -52,9 +52,11 @@ public class StateSpace {
 		for (Action action : parentActions) {
 			// get the successor state for that action
 			child = new Node(parentState.getSuccessorState(action));
-
+			counter++;
+			
 			// keep a pointer to the
-			movesAvailable = Heuristic.mostActionsAvailable(child);
+			movesAvailable = Heuristic.moveCounting(child);
+			System.out.println("adding a new node#" + counter + " h(n): " + movesAvailable);
 			if (movesAvailable > maxMoves) {
 				maxMoves = movesAvailable;
 				bestMove = action;
@@ -62,8 +64,10 @@ public class StateSpace {
 			}
 
 		}
-
+		System.out.println("MAX UTILITY NODE HAS VALUE h(n): " + maxMoves);
 	}
+	
+	private static int counter = 0;
 
 	// Recursively generate the state space rooted at the seed node
 	public void generateChildNodes(Node seed, int currentDepth) {
@@ -86,6 +90,8 @@ public class StateSpace {
 				// pruning
 				if (currentDepth < bestDepth && currentDepth < 10000) {
 					Node newSeed = new Node(seed, parentAction, childState);
+					counter++;
+					System.out.println("adding a new node#" + counter + " at " + currentDepth);
 					generateChildNodes(newSeed, currentDepth++);
 				}
 			}
