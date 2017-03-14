@@ -1,0 +1,60 @@
+package ai;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import gameBoard.Board;
+
+/*
+ * ...maybe have list of nodes here? Not really sure if this will be needed.
+ */
+public class StateSpace {
+	private ArrayList<Node> stateSpace;
+	private Node maxUtilityNode;
+
+	public StateSpace(Node seedNode) {
+		stateSpace = new ArrayList<Node>();
+	}
+
+	public void expandStateSpace(Node seed) {
+		// expand all children of this seed
+		boolean stillChildren = true;
+		
+	}
+	
+	
+	public void generateChildNodes(Node seed) {
+		State parentState = seed.getState();
+
+		ArrayList<Action> parentActions = ActionFactory.getActions(parentState);
+
+		State childState;
+
+		if (parentActions.size() > 0) {
+
+			// add all of the seeds successor nodes to the state space
+			for (Action parentAction : parentActions) {
+
+				// get the successor state for that action
+				childState = parentState.getSuccessorState(parentAction);
+
+				// TODO add condition on eval function to decide whether to add to state
+				// space
+
+				/*
+				 * add a new node to the state space containing of the outcome
+				 * of this action on the arrangement
+				 */
+				Node newSeed = new Node(seed, parentAction, childState);
+				this.stateSpace.add(newSeed);
+				generateChildNodes(newSeed);
+			}
+		} else {
+			// start backtracking
+			// case we have hit a terminal node
+			// TODO set the max utility node for this class if the eval is better 
+			// if (parentState.utility() < maxUtilitystate.utility()) {maxUtilityState = parentSate;}
+		}
+	}
+
+}

@@ -1,0 +1,71 @@
+package ai;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import gameBoard.Board;
+
+/*
+ * ...maybe have list of nodes here? Not really sure if this will be needed.
+ */
+public class StateSpace {
+	private ArrayList<Node> stateSpace;
+	private Node maxUtilityNode;
+	private int bestDepth = Integer.MAX_VALUE;
+
+	public StateSpace(Node seedNode) {
+		stateSpace = new ArrayList<Node>();
+	}
+	
+	// accepts a state representing the current arrangement of the board 
+	// action available according to the evaluation function
+	public Action searchForNextAction(State seed) {
+		Node root = new Node(seed);
+		Action nextMove;
+		generateChildNodes(root, 0);
+		if(maxUtilityNode != null) {
+			while(maxUtilityNode.getParent().getParent() != null) {
+				maxUtilityNode = maxUtilityNode.getParent();
+			}
+			nextMove = maxUtilityNode.getAction();
+		}
+		nextMove = ActionFactory.getActions(seed).get(0);
+	}
+	
+	public void generateChildNodes(Node seed, int currentDepth) {
+		State parentState = seed.getState();
+
+		ArrayList<Action> parentActions = ActionFactory.getActions(parentState);
+		State childState;
+		
+		if (parentActions.size() > 0) {
+			// add all of the seeds successor nodes to the state space
+			for (Action parentAction : parentActions) {
+
+				// get the successor state for that action
+				childState = parentState.getSuccessorState(parentAction);
+
+				/*
+				 * add a new node to the state space containing of the outcome
+				 * of this action on the arrangement
+				 */
+				// currently using the depth as a evaluation function
+				if (currentDepth < bestDepth && currentDepth < 10000) {					
+					Node newSeed = new Node(seed, parentAction, childState);
+					this.stateSpace.add(newSeed);
+					generateChildNodes(newSeed, currentDepth++);
+				}
+			}
+		} else {			
+			// case we have hit a terminal node
+			// TODO set the max utility node for athis class if the eval is better 
+			// if (parentState.utility() < maxUtilitystate.utility()) {maxUtilityState = parentSate;}
+			// currently using depth as heuristic
+			if(currentDepth < bestDepth) {
+				bestDepth = currentDepth;
+				maxUtilityNode = seed;
+			}
+		}
+	}
+
+}
