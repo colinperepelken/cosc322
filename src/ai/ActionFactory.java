@@ -15,9 +15,9 @@ public class ActionFactory {
 	 * @param state
 	 * @return a list of valid actions
 	 */
-	public static List<Action> getActions(State state) { // should also depend on which player?
+	public static ArrayList<Action> getActions(State state) { // should also depend on which player?
 		
-		List<Action> actions = new ArrayList<Action>();
+		ArrayList<Action> actions = new ArrayList<Action>();
 		Board board = state.getBoard(); // get the board object of the state
 		
 		int[] queens; // array of queens

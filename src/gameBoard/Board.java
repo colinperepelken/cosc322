@@ -1,7 +1,5 @@
 package gameBoard;
 
-import java.util.List;
-
 public class Board {
 
 	/*
@@ -40,6 +38,10 @@ public class Board {
 
 	public char[] getBoard() {
 		return board;
+	}
+	
+	public void setBoard(char[] arrangement) {
+		this.board = arrangement;
 	}
 	
 	/*
