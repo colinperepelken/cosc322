@@ -137,6 +137,7 @@ public class Board {
 		return boardState.toString();
 	}
 
+	// i dont think this works?
 	public static int cartesianToIndex(int xPos, int yPos) {
 		return (((yPos - 1) * 10) + (xPos - 1));
 
@@ -177,6 +178,16 @@ public class Board {
 		}
 	}
 	
+	/**
+	 * The cartesian method above doesn't work so I wrote this to get index from row and column.
+	 * @param row
+	 * @param column
+	 * @return the index in the 1D character array
+	 */
+	public static int getIndex(int row, int column) {
+		return Integer.parseInt(row +""+column);
+	}
+	
 	/*
 	 * Returns true if queen move is valid
 	 */
@@ -201,27 +212,29 @@ public class Board {
 		int destRow = getRow(endIndex);
 		int destCol = getColumn(endIndex);
 		
+		System.out.println("Index" + cartesianToIndex(9, 5));
+		
 		while (i < destRow) {
 			i++;
-			if (getSquare(cartesianToIndex(i, j)) != '_') { // it is blocked
+			if (getSquare(getIndex(i, j)) != '_') { // it is blocked
 				return true;
 			}
 		}
 		while (i > destRow) {
 			i--;
-			if (getSquare(cartesianToIndex(i, j)) != '_') {
+			if (getSquare(getIndex(i, j)) != '_') {
 				return true;
 			}
 		}
 		while (j < destCol) {
 			j++;
-			if (getSquare(cartesianToIndex(i, j)) != '_') {
+			if (getSquare(getIndex(i, j)) != '_') {
 				return true;
 			}
 		}
 		while (j > destCol) {
 			j--;
-			if (getSquare(cartesianToIndex(i, j)) != '_') {
+			if (getSquare(getIndex(i, j)) != '_') {
 				return true;
 			}
 		}
@@ -236,29 +249,29 @@ public class Board {
 	 * @return true if there is a piece in the way
 	 */
 	private boolean isBishopBlocked(int startIndex, int endIndex) {
-		int i = getRow(startIndex);
-		int j = getColumn(startIndex);
-		int destRow = getRow(endIndex);
-		int destCol = getColumn(endIndex);
-		
-		while (i < destRow) {
-			i++;
-			if (j < destCol) j++;
-			else j--;
-			if (getSquare(cartesianToIndex(i, j)) != '_') {
-				return true;
-			}
-		}
-		
-		while (i > destRow) {
-			i--;
-			if (j < destCol) j++;
-			else j--;
-			if (getSquare(cartesianToIndex(i, j)) != '_') {
-				return true;
-			}
-		}
-		
+//		int i = getRow(startIndex);
+//		int j = getColumn(startIndex);
+//		int destRow = getRow(endIndex);
+//		int destCol = getColumn(endIndex);
+//		
+//		while (i < destRow) {
+//			i++;
+//			if (j < destCol) j++;
+//			else j--;
+//			if (getSquare(cartesianToIndex(i, j)) != '_') {
+//				return true;
+//			}
+//		}
+//		
+//		while (i > destRow) {
+//			i--;
+//			if (j < destCol) j++;
+//			else j--;
+//			if (getSquare(cartesianToIndex(i, j)) != '_') {
+//				return true;
+//			}
+//		}
+//		
 		
 		return false; // the path is not blocked
 	}

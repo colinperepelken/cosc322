@@ -30,6 +30,11 @@ public class BoardTest {
 		assertEquals(9, Board.getRow(98));
 	}
 	
+	@Test
+	public void testGetIndex() {
+		assertEquals(59, Board.getIndex(5, 9));
+	}
+	
 //	@Test
 //	public void testIsValidQueenMove() {
 //		assertEquals(true, Board.isValidQueenMove(2, 35));
