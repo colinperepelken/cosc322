@@ -1,0 +1,25 @@
+package ai;
+
+import gameBoard.Board;
+
+/**
+ * Stores information about this state
+ */
+public class State {
+	private Board board;
+	
+	/**
+	 * Constructor
+	 * @param board The game board associated with this state.
+	 */
+	public State(Board board) {
+		// instantiates a new instance of a board and clones the inputed board's arrangement
+		this.board = new Board();
+		this.board.setBoard(board.getBoard());
+	
+	}
+	
+	public Board getBoard() {
+		return board;
+	}
+}

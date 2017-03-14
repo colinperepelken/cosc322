@@ -1,0 +1,39 @@
+package ai;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import gameBoard.Board;
+
+/*
+ * ...maybe have list of nodes here? Not really sure if this will be needed.
+ */
+public class StateSpace {
+	ArrayList<Node> stateSpace;
+	ActionFactory actionFactory = new ActionFactory();
+	
+	public StateSpace(Node seedNode) {
+		stateSpace = new ArrayList<>();
+	}
+	
+	public void generateStateSpace(Node seed) {
+		State parentState = seed.getState();
+
+		// The nodes in this current stack frame
+		ArrayList<Node> nodes = new ArrayList<>();
+		ArrayList<Action> parentActions = actionFactory.getActions(parentState);
+		
+		State childState;
+		
+		for(Action nextAction: parentActions) {
+			
+			// get the successor state for that action
+			childState = parentState.getSuccessorState(nextAction);
+			
+			//TODO use eval function to decide whether to add to state space
+			statSpace.add(new Node(parentNode, parentAction, childState));
+			
+		}
+	}
+
+}
