@@ -31,14 +31,14 @@ public class StateSpace {
 				maxUtilityNode = maxUtilityNode.getParent();
 			}
 
+			// set the nextMove that produced the maxUtilityNode branch
+			nextMove = maxUtilityNode.getAction();
+
 		} else {
 			// if no terminal nodes were found, just return the first movie
 			// returned by getActions()
-			generateChildNodesQuickly(root);
+			generateChildNodesQuickly(seed);
 		}
-		
-		// set the nextMove that produced the maxUtilityNode branch
-		nextMove = maxUtilityNode.getAction();
 
 		// return the nextMove decided on in this way
 		return nextMove;

@@ -31,45 +31,41 @@ public class StateSpace {
 				maxUtilityNode = maxUtilityNode.getParent();
 			}
 
+			// set the nextMove that produced the maxUtilityNode branch
+			nextMove = maxUtilityNode.getAction();
+
 		} else {
 			// if no terminal nodes were found, just return the first movie
 			// returned by getActions()
-			generateChildNodesQuickly(root);
+			
+			
 		}
 		
-		// set the nextMove that produced the maxUtilityNode branch
-		nextMove = maxUtilityNode.getAction();
-
 		// return the nextMove decided on in this way
 		return nextMove;
 	}
-
+	
 	public void generateChildNodesQuickly(Node seed) {
 		ArrayList<Action> parentActions = ActionFactory.getActions(seed.getState());
-		State parentState = seed.getState();
-		Node child;
-		Action bestMove;
+		if (actions.size() > 0) {
+			// add all of the seeds successor nodes to the state space
+			for (Action parentAction : parentActions) {
+				// get the successor state for that action
+				childState = parentState.getSuccessorState(parentAction);
 
-		int movesAvailable;
-		int maxMoves = Integer.MIN_VALUE;
-
-		// add all of the seeds successor nodes to the state space
-		for (Action action : parentActions) {
-			// get the successor state for that action
-			child = new Node(parentState.getSuccessorState(action));
-
-			// keep a pointer to the
-			movesAvailable = Heuristic.mostActionsAvailable(child);
-			if (movesAvailable > maxMoves) {
-				maxMoves = movesAvailable;
-				bestMove = action;
-				this.maxUtilityNode = new Node(seed, action, child.getState());
+				/*
+				 * add a new node to the state space containing of the outcome
+				 * of this action on the arrangement
+				 */
+				// currently using the depth as a evaluation function for pruning
+				if (currentDepth < bestDepth && currentDepth < 10000) {
+					Node newSeed = new Node(seed, parentAction, childState);
+					generateChildNodes(newSeed, currentDepth++);
+				}
 			}
-
 		}
-
 	}
-
+	
 	// Recursively generate the state space rooted at the seed node
 	public void generateChildNodes(Node seed, int currentDepth) {
 		State parentState = seed.getState();
@@ -87,8 +83,7 @@ public class StateSpace {
 				 * add a new node to the state space containing of the outcome
 				 * of this action on the arrangement
 				 */
-				// currently using the depth as a evaluation function for
-				// pruning
+				// currently using the depth as a evaluation function for pruning
 				if (currentDepth < bestDepth && currentDepth < 10000) {
 					Node newSeed = new Node(seed, parentAction, childState);
 					generateChildNodes(newSeed, currentDepth++);
