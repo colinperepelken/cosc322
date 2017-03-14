@@ -199,6 +199,14 @@ public class Board {
 		boolean validRookMove = getRow(startIndex) == getRow(endIndex) || getColumn(startIndex) == getColumn(endIndex);
 		boolean validBishopMove = Math.abs(getColumn(endIndex) - getColumn(startIndex)) == Math.abs(getRow(endIndex) - getRow(startIndex));
 		
+		// check if blocked
+		if (validRookMove) {
+			validRookMove = !isRookBlocked(startIndex, endIndex);
+		}
+		if (validBishopMove) {
+			validBishopMove = !isBishopBlocked(startIndex, endIndex);
+		}
+		
 		return validRookMove || validBishopMove;
 	}
 	
@@ -214,8 +222,11 @@ public class Board {
 		int destRow = getRow(endIndex);
 		int destCol = getColumn(endIndex);
 		
-		System.out.println("Index" + cartesianToIndex(9, 5));
-		
+		System.out.println("origin row: " + i);
+		System.out.println("origin col: " +j);
+		System.out.println("dest row: " + destRow);
+		System.out.println("dest col: " + destCol);
+
 		while (i < destRow) {
 			i++;
 			if (getSquare(getIndex(i, j)) != '_') { // it is blocked
@@ -251,29 +262,33 @@ public class Board {
 	 * @return true if there is a piece in the way
 	 */
 	private boolean isBishopBlocked(int startIndex, int endIndex) {
-//		int i = getRow(startIndex);
-//		int j = getColumn(startIndex);
-//		int destRow = getRow(endIndex);
-//		int destCol = getColumn(endIndex);
-//		
-//		while (i < destRow) {
-//			i++;
-//			if (j < destCol) j++;
-//			else j--;
-//			if (getSquare(cartesianToIndex(i, j)) != '_') {
-//				return true;
-//			}
-//		}
-//		
-//		while (i > destRow) {
-//			i--;
-//			if (j < destCol) j++;
-//			else j--;
-//			if (getSquare(cartesianToIndex(i, j)) != '_') {
-//				return true;
-//			}
-//		}
-//		
+		int i = getRow(startIndex);
+		int j = getColumn(startIndex);
+		int destRow = getRow(endIndex);
+		int destCol = getColumn(endIndex);
+		
+
+		
+		while (i < destRow) {
+			i++;
+			if (j < destCol) j++;
+			else j--;
+			if (getSquare(getIndex(i, j)) != '_') {
+				System.out.println("returninafasdjfad");
+				return true;
+			}
+		}
+		
+		while (i > destRow) {
+			i--;
+			if (j < destCol) j++;
+			else j--;
+			if (getSquare(getIndex(i, j)) != '_') {
+				System.out.println("Returning tre");
+				return true;
+			}
+		}
+		
 		
 		return false; // the path is not blocked
 	}
@@ -302,9 +317,14 @@ public class Board {
 		// 6. Checks to see if the arrow move is valid (starts at the new position and finishes at the arrow position)
 
 		// Move is only valid if all conditions are met.
-		return (hasQueen == true && isEmpty(endIndex) && (isValidQueenMove(startIndex, endIndex)) && (isEmpty(arrowIndex) ||arrowIndex == startIndex ) 
-				&& endIndex != arrowIndex && isValidQueenMove(endIndex, arrowIndex) 
-				&& !isRookBlocked(startIndex, endIndex) && !isBishopBlocked(startIndex, endIndex)); 
-
+		return (
+				
+				hasQueen == true 
+				&& isEmpty(endIndex) 
+				&& (isValidQueenMove(startIndex, endIndex)) 
+				&& (isEmpty(arrowIndex) ||arrowIndex == startIndex ) 
+				&& endIndex != arrowIndex 
+				&& isValidQueenMove(endIndex, arrowIndex));
+				
 	}
 }
