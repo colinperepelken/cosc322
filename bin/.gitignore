@@ -1,6 +1,9 @@
-/aiTests/
 /ai/
-/gameBoardTests/
+/aiTests/
+/arrow.png
+/blkQueen.png
 /gameBoard/
+/gameBoardTests/
 /serverCommunications/
+/whtQueen.png
 /ygraphs/

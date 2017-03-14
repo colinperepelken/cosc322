@@ -2,7 +2,6 @@ package ai;
 
 import java.util.ArrayList;
 
-
 public class StateSpace {
 	private Node maxUtilityNode;
 	private int bestDepth = Integer.MAX_VALUE;
@@ -19,11 +18,11 @@ public class StateSpace {
 		generateChildNodes(root, 0);
 
 		// case that the search found a node with worthwhile utility
-		if (maxUtilityNode != null) {
+		if (this.maxUtilityNode != null) {
 
 			// backtrack to the successor node
-			while (maxUtilityNode.getParent().getParent() != null) {
-				maxUtilityNode = maxUtilityNode.getParent();
+			while (this.maxUtilityNode.getParent().getParent() != null) {
+				this.maxUtilityNode = this.maxUtilityNode.getParent();
 			}
 
 		} else {
@@ -31,12 +30,20 @@ public class StateSpace {
 			// returned by getActions()
 			generateChildNodesQuickly(root);
 		}
-		
+
+		generateDefaultNode(root);
+
 		// set the nextMove that produced the maxUtilityNode branch
 		nextMove = maxUtilityNode.getAction();
 
 		// return the nextMove decided on in this way
 		return nextMove;
+	}
+
+	public void generateDefaultNode(Node seed) {
+		ArrayList<Action> parentActions = ActionFactory.getActions(seed.getState());
+		Action action = parentActions.get(0);
+		this.maxUtilityNode = new Node(seed, action, seed.getState().getSuccessorState(action));
 	}
 
 	public void generateChildNodesQuickly(Node seed) {
@@ -84,7 +91,7 @@ public class StateSpace {
 				 */
 				// currently using the depth as a evaluation function for
 				// pruning
-				if (currentDepth < bestDepth && currentDepth < 10000) {
+				if (currentDepth < this.bestDepth && currentDepth < 1) {
 					Node newSeed = new Node(seed, parentAction, childState);
 					generateChildNodes(newSeed, currentDepth++);
 				}
@@ -95,8 +102,8 @@ public class StateSpace {
 			// better
 			// currently just using depth as heuristic
 			if (currentDepth < bestDepth) {
-				bestDepth = currentDepth;
-				maxUtilityNode = seed;
+				this.bestDepth = currentDepth;
+				this.maxUtilityNode = seed;
 			}
 		}
 	}

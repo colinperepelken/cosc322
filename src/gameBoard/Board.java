@@ -213,9 +213,7 @@ public class Board {
 		int j = getColumn(startIndex);
 		int destRow = getRow(endIndex);
 		int destCol = getColumn(endIndex);
-		
-		System.out.println("Index" + cartesianToIndex(9, 5));
-		
+				
 		while (i < destRow) {
 			i++;
 			if (getSquare(getIndex(i, j)) != '_') { // it is blocked
