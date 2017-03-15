@@ -100,7 +100,7 @@ public class StateSpace {
 						this.alpha = numActions;
 						this.maxUtilityNode = newSeed;
 					}
-
+					
 					generateChildNodes(newSeed, ++currentDepth);
 				}
 			}
