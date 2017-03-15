@@ -142,7 +142,7 @@ public class Board {
 
 	// i dont think this works?
 	public static int cartesianToIndex(int xPos, int yPos) {
-		return (((yPos - 1) * 10) + (xPos - 1));
+		return (((10 - yPos) * 10) + (xPos - 1));
 
 	}
 
