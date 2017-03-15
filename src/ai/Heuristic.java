@@ -46,6 +46,15 @@ public class Heuristic {
 	}
 	
 	/**
+	 * Return is negative so that highest heuristic value represents state in which enemy has the least moves
+	 * @param n Node
+	 * @return a negative integer which represents the number of moves an enemy has
+	 */
+	public static int enemyMoveCounting(Node n) {
+		return -moveCounting(n);
+	}
+	
+	/**
 	 * Heuristic based on http://www.yorgalily.org/amazons/heuristics.html "Move Counting"
 	 * @param n Node
 	 * @return value h(n) - # of squares the queens can move to

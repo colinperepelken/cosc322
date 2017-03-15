@@ -35,7 +35,7 @@ public class StateSpace {
 
 		// set the nextMove that produced the maxUtilityNode branch
 		nextMove = maxUtilityNode.getAction();
-		System.out.println("h(n): " + Heuristic.moveCounting(maxUtilityNode));
+		System.out.println("h(n): " + Heuristic.enemyMoveCounting(maxUtilityNode));
 
 		// return the nextMove decided on in this way
 		return nextMove;
@@ -74,7 +74,7 @@ public class StateSpace {
 			child = new Node(parentState.getSuccessorState(action));
 
 			// keep a pointer to the
-			movesAvailable = Heuristic.moveCounting(child);
+			movesAvailable = Heuristic.enemyMoveCounting(child);
 			System.out.println("Moves counting: " + movesAvailable);
 			if (movesAvailable > maxMoves) {
 				maxMoves = movesAvailable;
@@ -110,7 +110,7 @@ public class StateSpace {
 					// currently just finding the node with the most actions
 					// available below depth limit
 					// as starting point for backtracking
-					int numActions = Heuristic.moveCounting(newSeed);
+					int numActions = Heuristic.enemyMoveCounting(newSeed);
 					System.out.println("# movecount: " + numActions);
 					if (newSeed.isWhite() && numActions > this.alpha) {
 						this.alpha = numActions;
