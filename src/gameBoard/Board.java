@@ -121,7 +121,7 @@ public class Board {
 			return true;
 
 		} else {
-			System.out.println("Your move was not valid");
+			//System.out.println("Your move was not valid");
 			return false;
 		}
 
@@ -313,8 +313,8 @@ public class Board {
 		// Move is only valid if all conditions are met.
 		return (
 				
-				//hasQueen == true 
-				/*&&*/ isEmpty(endIndex) 
+				hasQueen == true 
+				&& isEmpty(endIndex) 
 				&& (isValidQueenMove(startIndex, endIndex)) 
 				&& (isEmpty(arrowIndex) ||arrowIndex == startIndex ) 
 				&& endIndex != arrowIndex 

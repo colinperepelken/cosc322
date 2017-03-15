@@ -35,8 +35,22 @@ public class StateSpace {
 
 		// set the nextMove that produced the maxUtilityNode branch
 		nextMove = maxUtilityNode.getAction();
+		System.out.println("h(n): " + Heuristic.moveCounting(maxUtilityNode));
 
 		// return the nextMove decided on in this way
+		return nextMove;
+	}
+	
+	/*
+	 * Uses the generate nodes quickly method
+	 */
+	public Action searchForNextActionQuickly(State seed) {
+		Node root = new Node(seed);
+		Action nextMove;
+		
+		generateChildNodesQuickly(root);
+		nextMove = maxUtilityNode.getAction();
+		
 		return nextMove;
 	}
 
@@ -60,7 +74,8 @@ public class StateSpace {
 			child = new Node(parentState.getSuccessorState(action));
 
 			// keep a pointer to the
-			movesAvailable = Heuristic.mostActionsAvailable(child);
+			movesAvailable = Heuristic.moveCounting(child);
+			System.out.println("Moves counting: " + movesAvailable);
 			if (movesAvailable > maxMoves) {
 				maxMoves = movesAvailable;
 				this.maxUtilityNode = new Node(seed, action, child.getState());
@@ -95,7 +110,8 @@ public class StateSpace {
 					// currently just finding the node with the most actions
 					// available below depth limit
 					// as starting point for backtracking
-					int numActions = Heuristic.mostActionsAvailable(newSeed);
+					int numActions = Heuristic.moveCounting(newSeed);
+					System.out.println("# movecount: " + numActions);
 					if (newSeed.isWhite() && numActions > this.alpha) {
 						this.alpha = numActions;
 						this.maxUtilityNode = newSeed;
