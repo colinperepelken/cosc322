@@ -39,17 +39,17 @@ public class Board {
 	public char[] getBoard() {
 		return board;
 	}
-	
+
 	public void setBoard(char[] arrangement) {
 		this.board = arrangement;
 	}
-	
+
 	/*
 	 * Return array of indices of the 4 white queens
 	 */
 	public int[] getWhiteQueens() {
 		int[] whiteQueens = new int[4];
-		
+
 		int counter = 0;
 		for (int i = 0; i < board.length; i++) {
 			if (board[i] == WHITEQUEEN) {
@@ -59,13 +59,13 @@ public class Board {
 		}
 		return whiteQueens;
 	}
-	
+
 	/*
 	 * Return array of indices of the 4 black queens
 	 */
 	public int[] getBlackQueens() {
 		int[] blackQueens = new int[4];
-		
+
 		int counter = 0;
 		for (int i = 0; i < board.length; i++) {
 			if (board[i] == BLACKQUEEN) {
@@ -161,7 +161,7 @@ public class Board {
 			return false;
 		}
 	}
-	
+
 	// gets first digit from index
 	public static int getRow(int index) {
 		if (index < 10) {
@@ -170,7 +170,7 @@ public class Board {
 			return Integer.parseInt(Integer.toString(index).substring(0, 1));
 		}
 	}
-	
+
 	// gets second digit from index
 	public static int getColumn(int index) {
 		if (index < 10) {
@@ -179,31 +179,36 @@ public class Board {
 			return Integer.parseInt(Integer.toString(index).substring(1, 2));
 		}
 	}
-	
+
 	/**
-	 * The cartesian method above doesn't work so I wrote this to get index from row and column.
+	 * The cartesian method above doesn't work so I wrote this to get index from
+	 * row and column.
+	 * 
 	 * @param row
 	 * @param column
 	 * @return the index in the 1D character array
 	 */
 	public static int getIndex(int row, int column) {
-		return Integer.parseInt(row +""+column);
+		return Integer.parseInt(row + "" + column);
 	}
-	
+
 	/*
 	 * Returns true if queen move is valid
 	 */
 	public boolean isValidQueenMove(int startIndex, int endIndex) {
-		
-		// a queen move can be broken down into rook/bishop components for simplification
+
+		// a queen move can be broken down into rook/bishop components for
+		// simplification
 		boolean validRookMove = getRow(startIndex) == getRow(endIndex) || getColumn(startIndex) == getColumn(endIndex);
-		boolean validBishopMove = Math.abs(getColumn(endIndex) - getColumn(startIndex)) == Math.abs(getRow(endIndex) - getRow(startIndex));
-		
+		boolean validBishopMove = Math.abs(getColumn(endIndex) - getColumn(startIndex)) == Math
+				.abs(getRow(endIndex) - getRow(startIndex));
+
 		return validRookMove || validBishopMove;
 	}
-	
+
 	/**
 	 * Checks if the rook move is blocked by another piece (along the route)
+	 * 
 	 * @param startIndex
 	 * @param endIndex
 	 * @return true if there is a piece in the way
@@ -213,7 +218,7 @@ public class Board {
 		int j = getColumn(startIndex);
 		int destRow = getRow(endIndex);
 		int destCol = getColumn(endIndex);
-				
+
 		while (i < destRow) {
 			i++;
 			if (getSquare(getIndex(i, j)) != '_') { // it is blocked
@@ -238,41 +243,42 @@ public class Board {
 				return true;
 			}
 		}
-		
+
 		return false; // the path is not blocked
 	}
-	
+
 	/**
 	 * Checks if the bishop move is blocked by another piece (along the route)
+	 * 
 	 * @param startIndex
 	 * @param endIndex
 	 * @return true if there is a piece in the way
 	 */
 	private boolean isBishopBlocked(int startIndex, int endIndex) {
-//		int i = getRow(startIndex);
-//		int j = getColumn(startIndex);
-//		int destRow = getRow(endIndex);
-//		int destCol = getColumn(endIndex);
-//		
-//		while (i < destRow) {
-//			i++;
-//			if (j < destCol) j++;
-//			else j--;
-//			if (getSquare(cartesianToIndex(i, j)) != '_') {
-//				return true;
-//			}
-//		}
-//		
-//		while (i > destRow) {
-//			i--;
-//			if (j < destCol) j++;
-//			else j--;
-//			if (getSquare(cartesianToIndex(i, j)) != '_') {
-//				return true;
-//			}
-//		}
-//		
-		
+		// int i = getRow(startIndex);
+		// int j = getColumn(startIndex);
+		// int destRow = getRow(endIndex);
+		// int destCol = getColumn(endIndex);
+		//
+		// while (i < destRow) {
+		// i++;
+		// if (j < destCol) j++;
+		// else j--;
+		// if (getSquare(cartesianToIndex(i, j)) != '_') {
+		// return true;
+		// }
+		// }
+		//
+		// while (i > destRow) {
+		// i--;
+		// if (j < destCol) j++;
+		// else j--;
+		// if (getSquare(cartesianToIndex(i, j)) != '_') {
+		// return true;
+		// }
+		// }
+		//
+
 		return false; // the path is not blocked
 	}
 
@@ -292,17 +298,21 @@ public class Board {
 
 		// Checks all of the follow conditions
 
-		// 1. Checks if the starting position has a queen of the correct color in it.
+		// 1. Checks if the starting position has a queen of the correct color
+		// in it.
 		// 2. Checks to see if the target position is a empty
 		// 3. Validates that the move is possible (follows queen-move rules)
-		// 4. Checks if the target arrow position is empty or if it is the same as the start position
+		// 4. Checks if the target arrow position is empty or if it is the same
+		// as the start position
 		// 5. Checks if the end position and arrow position are the same
-		// 6. Checks to see if the arrow move is valid (starts at the new position and finishes at the arrow position)
+		// 6. Checks to see if the arrow move is valid (starts at the new
+		// position and finishes at the arrow position)
 
 		// Move is only valid if all conditions are met.
-		return (hasQueen == true && isEmpty(endIndex) && (isValidQueenMove(startIndex, endIndex)) && (isEmpty(arrowIndex) ||arrowIndex == startIndex ) 
-				&& endIndex != arrowIndex && isValidQueenMove(endIndex, arrowIndex) 
-				&& !isRookBlocked(startIndex, endIndex) && !isBishopBlocked(startIndex, endIndex)); 
+		return (isEmpty(endIndex) && (isValidQueenMove(startIndex, endIndex))
+				&& (isEmpty(arrowIndex) || arrowIndex == startIndex) && endIndex != arrowIndex
+				&& isValidQueenMove(endIndex, arrowIndex) && !isRookBlocked(startIndex, endIndex)
+				&& !isBishopBlocked(startIndex, endIndex));
 
 	}
 }

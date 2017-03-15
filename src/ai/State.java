@@ -26,6 +26,6 @@ public class State {
 	}
 	
 	public Board getBoard() {
-		return board;
+		return this.board;
 	}
 }

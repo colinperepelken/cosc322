@@ -18,7 +18,7 @@ public class Heuristic {
 		int h = 0; // heuristic value to be returned
 		int[] queens;
 		
-		boolean isBlack = true;
+		boolean isBlack = n.isBlack();
 		if(isBlack) { // should come up with something better... check if node is black player
 			queens = board.getBlackQueens();
 			
@@ -26,15 +26,13 @@ public class Heuristic {
 			queens = board.getWhiteQueens();
 		}
 		
-		// iterate over all black queens and find one with o how many owned
+		// iterate over all queens
 		for(int q: queens) {
 			// need to expand the space as far down as possible and find the most owned branch
-			
 			
 		}
 		
 		// TODO: IMPLEMENTATION HERE 
-		
 		return h;
 	}
 	
@@ -44,6 +42,6 @@ public class Heuristic {
 	 * @return value h(n) - number of actions available
 	 */
 	public static int mostActionsAvailable(Node n) {
-		return ActionFactory.getActions(n.getState()).size();
+		return ActionFactory.getActions(n).size();
 	}
 }

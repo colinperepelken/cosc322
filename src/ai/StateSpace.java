@@ -5,7 +5,9 @@ import java.util.ArrayList;
 public class StateSpace {
 	private Node maxUtilityNode;
 	private int bestDepth = Integer.MAX_VALUE;
-
+	private int alpha = 0;
+	private int beta = 0;
+	
 	// accepts a state representing the current arrangement of the board
 	// action available according to the evaluation function
 	public Action searchForNextAction(State seed) {
@@ -15,7 +17,7 @@ public class StateSpace {
 		Action nextMove;
 
 		// recursively generate the state space
-		generateChildNodes(root, 0);
+//		generateChildNodes(root, 0);
 
 		// case that the search found a node with worthwhile utility
 		if (this.maxUtilityNode != null) {
@@ -31,8 +33,8 @@ public class StateSpace {
 			generateChildNodesQuickly(root);
 		}
 
-		generateDefaultNode(root);
-
+		generateChildNodesQuickly(root);
+		
 		// set the nextMove that produced the maxUtilityNode branch
 		nextMove = maxUtilityNode.getAction();
 
@@ -41,13 +43,13 @@ public class StateSpace {
 	}
 
 	public void generateDefaultNode(Node seed) {
-		ArrayList<Action> parentActions = ActionFactory.getActions(seed.getState());
+		ArrayList<Action> parentActions = ActionFactory.getActions(seed);
 		Action action = parentActions.get(0);
 		this.maxUtilityNode = new Node(seed, action, seed.getState().getSuccessorState(action));
 	}
 
 	public void generateChildNodesQuickly(Node seed) {
-		ArrayList<Action> parentActions = ActionFactory.getActions(seed.getState());
+		ArrayList<Action> parentActions = ActionFactory.getActions(seed);
 		State parentState = seed.getState();
 		Node child;
 		Action bestMove;
@@ -76,7 +78,7 @@ public class StateSpace {
 	public void generateChildNodes(Node seed, int currentDepth) {
 		State parentState = seed.getState();
 
-		ArrayList<Action> parentActions = ActionFactory.getActions(parentState);
+		ArrayList<Action> parentActions = ActionFactory.getActions(seed);
 		State childState;
 
 		if (parentActions.size() > 0) {
@@ -91,15 +93,14 @@ public class StateSpace {
 				 */
 				// currently using the depth as a evaluation function for
 				// pruning
-				if (currentDepth < this.bestDepth && currentDepth < 1) {
+				if (currentDepth < this.bestDepth && currentDepth < 10) {
 					Node newSeed = new Node(seed, parentAction, childState);
 					generateChildNodes(newSeed, currentDepth++);
 				}
 			}
 		} else {
 			// case we have hit a terminal node - no actions possible
-			// TODO set the max utility node for athis class if the eval is
-			// better
+			// TODO set the max utility node for athis class if the eval is better
 			// currently just using depth as heuristic
 			if (currentDepth < bestDepth) {
 				this.bestDepth = currentDepth;
