@@ -95,7 +95,9 @@ public class StateSpace {
 					// currently just finding the node with the most actions
 					// available below depth limit
 					// as starting point for backtracking
-					if (newSeed.isWhite() && Heuristic.mostActionsAvailable(newSeed) > this.alpha) {
+					int numActions = Heuristic.mostActionsAvailable(newSeed);
+					if (newSeed.isWhite() && numActions > this.alpha) {
+						this.alpha = numActions;
 						this.maxUtilityNode = newSeed;
 					}
 

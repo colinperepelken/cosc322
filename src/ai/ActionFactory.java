@@ -42,75 +42,75 @@ public class ActionFactory {
 
 			// horizontals
 			for (int j = pos / 10; j < pos / 10 + 9; j++) {
-				addValidArrowMoves(pos, j, board, actions);
+				addValidArrowMoves(node.isWhite(), pos, j, board, actions);
 			}
 
 			// verticals
 			for (int j = pos; j < 99; j += 10) {
-				addValidArrowMoves(pos, j, board, actions);
+				addValidArrowMoves(node.isWhite(), pos, j, board, actions);
 			}
 
 			for (int j = pos; j > 9; j -= 10) {
-				addValidArrowMoves(pos, j, board, actions);
+				addValidArrowMoves(node.isWhite(), pos, j, board, actions);
 			}
 
 			// diagonals
 			for (int j = pos; j < 89; j += 11) {
-				addValidArrowMoves(pos, j, board, actions);
+				addValidArrowMoves(node.isWhite(), pos, j, board, actions);
 			}
 
 			for (int j = pos; j > 11; j -= 11) {
-				addValidArrowMoves(pos, j, board, actions);
+				addValidArrowMoves(node.isWhite(), pos, j, board, actions);
 			}
 
 			for (int j = pos; j < 91; j += 9) {
-				addValidArrowMoves(pos, j, board, actions);
+				addValidArrowMoves(node.isWhite(), pos, j, board, actions);
 			}
 
 			for (int j = pos; j > 8; j -= 9) {
-				addValidArrowMoves(pos, j, board, actions);
+				addValidArrowMoves(node.isWhite(), pos, j, board, actions);
 			}
 
 		}
 		return actions; // return the list of possible actions for the state
 	}
 
-	public static void addValidArrowMoves(int pos, int j, Board board, ArrayList<Action> actions) {
-		for (int k = j / 10; k < j / 10 % 9; k += 1) {
-			if (board.validateMove(false, pos, j, k)) { // check if valid
+	public static void addValidArrowMoves(boolean isWhite, int pos, int j, Board board, ArrayList<Action> actions) {
+		for (int k = j / 10; k < j / 10 + 9; k += 1) {
+			if (board.validateMove(isWhite, pos, j, k)) { // check if valid
 				actions.add(new Action(pos, j, k)); // add an action
 			}
 		}
 
 		for (int k = j; k < 90; k += 10) {
-			if (board.validateMove(false, pos, j, k)) { // check if valid
+			if (board.validateMove(isWhite, pos, j, k)) { // check if valid
 				actions.add(new Action(pos, j, k)); // add an action
 			}
 		}
 
 		for (int k = j; k > 9; k -= 10) {
-			if (board.validateMove(false, pos, j, k)) { // check if valid
+			if (board.validateMove(isWhite, pos, j, k)) { // check if valid
 				actions.add(new Action(pos, j, k)); // add an action
 			}
 		}
 
 		for (int k = j; k < 89; k += 11) {
-			if (board.validateMove(false, pos, j, k)) { // check if valid
+			if (board.validateMove(isWhite, pos, j, k)) { // check if valid
 				actions.add(new Action(pos, j, k)); // add an action
 			}
 		}
 		for (int k = j; k > 10; k -= 11) {
-			if (board.validateMove(false, pos, j, k)) { // check if valid
+			if (board.validateMove(isWhite, pos, j, k)) { // check if valid
 				actions.add(new Action(pos, j, k)); // add an action
 			}
 		}
 		for (int k = j; k < 91; k += 9) {
-			if (board.validateMove(false, pos, j, k)) { // check if valid
+			if (board.validateMove(isWhite, pos, j, k)) { // check if valid
 				actions.add(new Action(pos, j, k)); // add an action
 			}
 		}
 		for (int k = j; k > 8; k -= 9) {
-			if (board.validateMove(false, pos, j, k)) { // check if valid
+			if (board.validateMove(isWhite, pos, j, k)) { // check if valid
 				actions.add(new Action(pos, j, k)); // add an action
 			}
 		}
