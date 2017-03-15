@@ -91,7 +91,7 @@ public class StateSpace {
 				 */
 				// currently using the depth as a evaluation function for
 				// pruning
-				if (currentDepth < this.bestDepth && currentDepth < 100) {
+				if (currentDepth < this.bestDepth && currentDepth < 12) {
 					Node newSeed = new Node(seed, parentAction, childState);
 					
 					// currently just finding the node with the most actions available below depth limit
