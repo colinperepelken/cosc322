@@ -163,7 +163,7 @@ public class ActionFactory {
 	}
 
 	public static void addValidArrowMoves(int pos, int j, Board board, ArrayList<Action> actions) {
-		int index = pos;
+		int index = j;
 		while (index < 90) {
 			index += 10;
 			if (board.isEmpty(index)) {
@@ -174,7 +174,7 @@ public class ActionFactory {
 				break;
 			}
 		}
-		index = pos;
+		index = j;
 		while (index > 10) {
 			index -= 10;
 			if (board.isEmpty(index)) {
@@ -185,7 +185,7 @@ public class ActionFactory {
 				break;
 			}
 		}
-		index = pos;
+		index = j;
 		int max = Integer.parseInt(Board.getRow(pos)+"9");
 		while (index < max) {
 			index++;
@@ -197,7 +197,7 @@ public class ActionFactory {
 				break;
 			}
 		}
-		index = pos;
+		index = j;
 		int min = Integer.parseInt(Board.getRow(pos) + "0");
 		while (index > min) {
 			index--;
@@ -230,7 +230,7 @@ public class ActionFactory {
 //				actions.add(new Action(pos, j, k)); // add an action
 //			}
 //		}
-		index = pos;
+		index = j;
 		int startRow = Board.getRow(index);
 		int startCol = Board.getColumn(index);
 		int r = startRow;
