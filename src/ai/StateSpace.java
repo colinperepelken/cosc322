@@ -7,7 +7,7 @@ public class StateSpace {
 	private int bestDepth = Integer.MAX_VALUE;
 	private int alpha = 0;
 	private int beta = 0;
-	
+
 	// accepts a state representing the current arrangement of the board
 	// action available according to the evaluation function
 	public Action searchForNextAction(State seed) {
@@ -32,7 +32,7 @@ public class StateSpace {
 			// returned by getActions()
 			generateChildNodesQuickly(root);
 		}
-		
+
 		// set the nextMove that produced the maxUtilityNode branch
 		nextMove = maxUtilityNode.getAction();
 
@@ -50,7 +50,6 @@ public class StateSpace {
 		ArrayList<Action> parentActions = ActionFactory.getActions(seed);
 		State parentState = seed.getState();
 		Node child;
-		Action bestMove;
 
 		int movesAvailable;
 		int maxMoves = Integer.MIN_VALUE;
@@ -59,12 +58,11 @@ public class StateSpace {
 		for (Action action : parentActions) {
 			// get the successor state for that action
 			child = new Node(parentState.getSuccessorState(action));
-			
+
 			// keep a pointer to the
 			movesAvailable = Heuristic.mostActionsAvailable(child);
 			if (movesAvailable > maxMoves) {
 				maxMoves = movesAvailable;
-				bestMove = action;
 				this.maxUtilityNode = new Node(seed, action, child.getState());
 			}
 
@@ -78,7 +76,7 @@ public class StateSpace {
 
 		ArrayList<Action> parentActions = ActionFactory.getActions(seed);
 		State childState;
-		
+
 		if (parentActions.size() > 0) {
 			// add all of the seeds successor nodes to the state space
 			for (Action parentAction : parentActions) {
@@ -93,24 +91,26 @@ public class StateSpace {
 				// pruning
 				if (currentDepth < this.bestDepth && currentDepth < 12) {
 					Node newSeed = new Node(seed, parentAction, childState);
-					
-					// currently just finding the node with the most actions available below depth limit
+
+					// currently just finding the node with the most actions
+					// available below depth limit
 					// as starting point for backtracking
 					if (newSeed.isWhite() && Heuristic.mostActionsAvailable(newSeed) > this.alpha) {
 						this.maxUtilityNode = newSeed;
 					}
-					
+
 					generateChildNodes(newSeed, ++currentDepth);
 				}
 			}
 		} else {
 			// case we have hit a terminal node - no actions possible
-			// TODO set the max utility node for athis class if the eval is better
+			// TODO set the max utility node for athis class if the eval is
+			// better
 			// currently just using depth as heuristic
 			if (currentDepth < bestDepth && seed.isBlack()) {
 				// case the opponent cannot move
 				this.bestDepth = currentDepth;
-				this.maxUtilityNode = seed;						
+				this.maxUtilityNode = seed;
 			}
 		}
 	}
