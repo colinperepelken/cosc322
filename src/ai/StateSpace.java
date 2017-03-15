@@ -91,12 +91,12 @@ public class StateSpace {
 				 */
 				// currently using the depth as a evaluation function for
 				// pruning
-				if (currentDepth < this.bestDepth && currentDepth < 10) {
+				if (currentDepth < this.bestDepth && currentDepth < 100) {
 					Node newSeed = new Node(seed, parentAction, childState);
 					
 					// currently just finding the node with the most actions available below depth limit
 					// as starting point for backtracking
-					if (Heuristic.mostActionsAvailable(newSeed) > this.alpha) {
+					if (newSeed.isWhite() && Heuristic.mostActionsAvailable(newSeed) > this.alpha) {
 						this.maxUtilityNode = newSeed;
 					}
 					
@@ -107,9 +107,10 @@ public class StateSpace {
 			// case we have hit a terminal node - no actions possible
 			// TODO set the max utility node for athis class if the eval is better
 			// currently just using depth as heuristic
-			if (currentDepth < bestDepth) {
+			if (currentDepth < bestDepth && seed.isBlack()) {
+				// case the opponent cannot move
 				this.bestDepth = currentDepth;
-				this.maxUtilityNode = seed;
+				this.maxUtilityNode = seed;						
 			}
 		}
 	}
