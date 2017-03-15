@@ -17,7 +17,7 @@ public class StateSpace {
 		Action nextMove;
 
 		// recursively generate the state space
-//		generateChildNodes(root, 0);
+		generateChildNodes(root, 0);
 
 		// case that the search found a node with worthwhile utility
 		if (this.maxUtilityNode != null) {
@@ -32,8 +32,6 @@ public class StateSpace {
 			// returned by getActions()
 			generateChildNodesQuickly(root);
 		}
-
-		generateChildNodesQuickly(root);
 		
 		// set the nextMove that produced the maxUtilityNode branch
 		nextMove = maxUtilityNode.getAction();
@@ -61,7 +59,7 @@ public class StateSpace {
 		for (Action action : parentActions) {
 			// get the successor state for that action
 			child = new Node(parentState.getSuccessorState(action));
-
+			
 			// keep a pointer to the
 			movesAvailable = Heuristic.mostActionsAvailable(child);
 			if (movesAvailable > maxMoves) {
@@ -80,7 +78,7 @@ public class StateSpace {
 
 		ArrayList<Action> parentActions = ActionFactory.getActions(seed);
 		State childState;
-
+		
 		if (parentActions.size() > 0) {
 			// add all of the seeds successor nodes to the state space
 			for (Action parentAction : parentActions) {
@@ -95,7 +93,14 @@ public class StateSpace {
 				// pruning
 				if (currentDepth < this.bestDepth && currentDepth < 10) {
 					Node newSeed = new Node(seed, parentAction, childState);
-					generateChildNodes(newSeed, currentDepth++);
+					
+					// currently just finding the node with the most actions available below depth limit
+					// as starting point for backtracking
+					if (Heuristic.mostActionsAvailable(newSeed) > this.alpha) {
+						this.maxUtilityNode = newSeed;
+					}
+					
+					generateChildNodes(newSeed, ++currentDepth);
 				}
 			}
 		} else {
