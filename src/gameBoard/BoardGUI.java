@@ -1,25 +1,30 @@
 package gameBoard;
 
+import ai.State;
+import ai.StateSpace;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import serverCommunications.ServerCom;
-import javafx.geometry.Pos;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Region;
 
 public class BoardGUI extends Application {
 	// Border Pane
@@ -352,6 +357,7 @@ public class BoardGUI extends Application {
 
 				}
 				chessBoard.add(squareContainer, colIndex, rowIndex);
+				
 
 				// The game board will only resize until it hits this
 				// preference so
@@ -396,18 +402,40 @@ public class BoardGUI extends Application {
 		activePlayer.getStyleClass().add("sidebar-label");
 		turnCountLabel.getStyleClass().add("sidebar-label");
 		turnTimerLabel.getStyleClass().add("sidebar-label");
-
+		
+		
+		// menu bar stuff
+		MenuBar menuBar = new MenuBar();
+		Menu menuFile = new Menu("File");
+		menuBar.getMenus().addAll(menuFile);
+		
+		// menu item
+		MenuItem ai = new MenuItem("AI Compute");
+		ai.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent t) {
+				System.out.println("Computing AI move...");
+				System.out.println(new StateSpace().searchForNextAction(new State(currentGame.getBoard())).toStringCoordinates());
+			}
+		});
+		menuFile.getItems().addAll(ai);
+		root.setTop(menuBar); // add menu bar to screen
+		
 		// Attaches the side-bar to the main window.
 		root.setLeft(leftBar);
 
 		// Default window size and the root display attached to the window
 		Scene scene = new Scene(root, 1000, 800);
+		
+		 
 
 		// Adds the Style sheet
 		scene.getStylesheets().add("gameBoard/boardGUI.css");
-
+		
 		primaryStage.setScene(scene);
 		primaryStage.show();
+		
+
+		
 
 	}
 

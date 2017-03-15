@@ -81,7 +81,7 @@ public class TestAI {
 		Board b = new Board();
 		b.newGame();
 		State s = new State(b);
-		new StateSpace().searchForNextAction(s);
+		System.out.println(new StateSpace().searchForNextAction(s).toString());
 	}
 	
 //	@Test

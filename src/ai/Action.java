@@ -1,5 +1,7 @@
 package ai;
 
+import gameBoard.Board;
+
 /**
  * Valid moves, generally associated with a state.
  */
@@ -27,6 +29,16 @@ public class Action {
 	public String toString() {
 		return String.format("Queen Start: %d\nQueen End: %d\nArrow: %d", 
 				queenStartIndex, queenEndIndex, arrowIndex);
+	}
+	
+	/**
+	 * Convert action object to string with coordinates instead of index
+	 */
+	public String toStringCoordinates() {
+		return String.format("Coordinates are (row,col)\nQueen Start: (%d,%d)\nQueen End: (%d,%d)\nArrow: (%d,%d)", 
+				Board.getRow(queenStartIndex), Board.getColumn(queenStartIndex),
+				Board.getRow(queenEndIndex), Board.getColumn(queenEndIndex),
+				Board.getRow(arrowIndex), Board.getColumn(arrowIndex));
 	}
 	
 	//////// getters
