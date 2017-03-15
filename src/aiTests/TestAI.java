@@ -11,6 +11,7 @@ import ai.ActionFactory;
 import ai.Heuristic;
 import ai.Node;
 import ai.State;
+import ai.StateSpace;
 import gameBoard.Board;
 
 /*
@@ -33,13 +34,13 @@ public class TestAI {
 		b.newGame();
 		State s = new State(b);
 		Node n = new Node(s);
-		assertEquals(2560, Heuristic.mostActionsAvailable(n)); // initial state should have 640 actions available to a player
+		assertEquals(2048, Heuristic.mostActionsAvailable(n)); // initial state should have 640 actions available to a player
 		
 		// move a player
 		b.makeMove(true, 96, 16, 15);
 		s = new State(b);
 		n = new Node(s);
-		assertEquals(2508, Heuristic.mostActionsAvailable(n)); // # actions for black should decrease after this move
+		assertEquals(1580, Heuristic.mostActionsAvailable(n)); // # actions for black should decrease after this move
 	}
 	
 	/*
@@ -65,4 +66,30 @@ public class TestAI {
 		
 		// could write tests to more thoroughly test getActions.....
 	}
+	
+//	@Test
+//	public void testGenerateChildNodesQuickly() {
+//		Board b = new Board();
+//		b.newGame();
+//		State s = new State(b);
+//		Node n = new Node(s);
+//		new StateSpace().generateChildNodesQuickly(n);
+//	}
+	
+	@Test
+	public void testSearchForNextAction() {
+		Board b = new Board();
+		b.newGame();
+		State s = new State(b);
+		new StateSpace().searchForNextAction(s);
+	}
+	
+//	@Test
+//	public void testGenerateChildNodes() {
+//		Board b = new Board();
+//		b.newGame();
+//		State s = new State(b);
+//		Node n = new Node(s);
+//		new StateSpace().generateChildNodes(n, 0);
+//	}
 }
