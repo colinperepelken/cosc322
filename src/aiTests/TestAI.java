@@ -50,7 +50,8 @@ public class TestAI {
 		Board b = new Board();
 		b.newGame();
 		State s = new State(b);
-		List<Action> actions = ActionFactory.getActions(s);
+		Node n = new Node(s);
+		List<Action> actions = ActionFactory.getActions(n);
 		
 		
 //		for (Action a : actions) {

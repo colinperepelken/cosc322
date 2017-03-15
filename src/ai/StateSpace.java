@@ -2,10 +2,11 @@ package ai;
 
 import java.util.ArrayList;
 
-
 public class StateSpace {
 	private Node maxUtilityNode;
 	private int bestDepth = Integer.MAX_VALUE;
+	private int alpha = 0;
+	private int beta = 0;
 
 	// accepts a state representing the current arrangement of the board
 	// action available according to the evaluation function
@@ -19,11 +20,11 @@ public class StateSpace {
 		generateChildNodes(root, 0);
 
 		// case that the search found a node with worthwhile utility
-		if (maxUtilityNode != null) {
+		if (this.maxUtilityNode != null) {
 
 			// backtrack to the successor node
-			while (maxUtilityNode.getParent().getParent() != null) {
-				maxUtilityNode = maxUtilityNode.getParent();
+			while (this.maxUtilityNode.getParent().getParent() != null) {
+				this.maxUtilityNode = this.maxUtilityNode.getParent();
 			}
 
 		} else {
@@ -31,7 +32,7 @@ public class StateSpace {
 			// returned by getActions()
 			generateChildNodesQuickly(root);
 		}
-		
+
 		// set the nextMove that produced the maxUtilityNode branch
 		nextMove = maxUtilityNode.getAction();
 
@@ -39,11 +40,16 @@ public class StateSpace {
 		return nextMove;
 	}
 
+	public void generateDefaultNode(Node seed) {
+		ArrayList<Action> parentActions = ActionFactory.getActions(seed);
+		Action action = parentActions.get(0);
+		this.maxUtilityNode = new Node(seed, action, seed.getState().getSuccessorState(action));
+	}
+
 	public void generateChildNodesQuickly(Node seed) {
-		ArrayList<Action> parentActions = ActionFactory.getActions(seed.getState());
+		ArrayList<Action> parentActions = ActionFactory.getActions(seed);
 		State parentState = seed.getState();
 		Node child;
-		Action bestMove;
 
 		int movesAvailable;
 		int maxMoves = Integer.MIN_VALUE;
@@ -57,7 +63,6 @@ public class StateSpace {
 			movesAvailable = Heuristic.mostActionsAvailable(child);
 			if (movesAvailable > maxMoves) {
 				maxMoves = movesAvailable;
-				bestMove = action;
 				this.maxUtilityNode = new Node(seed, action, child.getState());
 			}
 
@@ -69,7 +74,7 @@ public class StateSpace {
 	public void generateChildNodes(Node seed, int currentDepth) {
 		State parentState = seed.getState();
 
-		ArrayList<Action> parentActions = ActionFactory.getActions(parentState);
+		ArrayList<Action> parentActions = ActionFactory.getActions(seed);
 		State childState;
 
 		if (parentActions.size() > 0) {
@@ -84,9 +89,19 @@ public class StateSpace {
 				 */
 				// currently using the depth as a evaluation function for
 				// pruning
-				if (currentDepth < bestDepth && currentDepth < 10000) {
+				if (currentDepth < this.bestDepth && currentDepth < 12) {
 					Node newSeed = new Node(seed, parentAction, childState);
-					generateChildNodes(newSeed, currentDepth++);
+
+					// currently just finding the node with the most actions
+					// available below depth limit
+					// as starting point for backtracking
+					int numActions = Heuristic.mostActionsAvailable(newSeed);
+					if (newSeed.isWhite() && numActions > this.alpha) {
+						this.alpha = numActions;
+						this.maxUtilityNode = newSeed;
+					}
+					
+					generateChildNodes(newSeed, ++currentDepth);
 				}
 			}
 		} else {
@@ -94,9 +109,10 @@ public class StateSpace {
 			// TODO set the max utility node for athis class if the eval is
 			// better
 			// currently just using depth as heuristic
-			if (currentDepth < bestDepth) {
-				bestDepth = currentDepth;
-				maxUtilityNode = seed;
+			if (currentDepth < bestDepth && seed.isBlack()) {
+				// case the opponent cannot move
+				this.bestDepth = currentDepth;
+				this.maxUtilityNode = seed;
 			}
 		}
 	}
