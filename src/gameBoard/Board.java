@@ -211,6 +211,18 @@ public class Board {
 		return validRookMove || validBishopMove;
 	}
 	
+	/*
+	 * Returns true if queen move is valid (used for checking arrow queen move)
+	 */
+	public boolean isValidQueenMove(int startIndex, int endIndex, int arrowIndex) {
+		
+		if (arrowIndex == startIndex) {
+			return true;
+		} else {
+			return isValidQueenMove(endIndex, arrowIndex);
+		}
+	}
+	
 	/**
 	 * Checks if the rook move is blocked by another piece (along the route)
 	 * @param startIndex
@@ -318,7 +330,7 @@ public class Board {
 				&& (isValidQueenMove(startIndex, endIndex)) 
 				&& (isEmpty(arrowIndex) ||arrowIndex == startIndex ) 
 				&& endIndex != arrowIndex 
-				&& isValidQueenMove(endIndex, arrowIndex));
+				&& isValidQueenMove(startIndex, endIndex, arrowIndex)); // the arrow shot
 				
 	}
 }
