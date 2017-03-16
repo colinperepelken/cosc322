@@ -414,7 +414,8 @@ public class BoardGUI extends Application {
 		ai.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent t) {
 				System.out.println("Computing AI move...");
-				System.out.println(new StateSpace().searchForNextAction(new State(currentGame.getBoard())).toStringCoordinates());
+				System.out.println(new StateSpace().searchForNextActionQuickly(new State(currentGame.getBoard())).toStringCoordinates());
+				System.out.println(currentGame.getBoard().toString());
 			}
 		});
 		menuFile.getItems().addAll(ai);

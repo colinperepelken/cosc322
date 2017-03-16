@@ -66,7 +66,7 @@ public class Heuristic {
 		
 		int[] queens; // array of queens
 		
-		boolean isBlack = true;
+		boolean isBlack = false;
 		if (isBlack) { // assume AI is black...
 			
 			queens = board.getBlackQueens();

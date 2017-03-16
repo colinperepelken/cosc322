@@ -1,7 +1,6 @@
 package ai;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import gameBoard.Board;
 
@@ -12,7 +11,7 @@ public class ActionFactory {
 
 	
 	
-	public static ArrayList<Action> getActionsSlowly(Node node) {
+	public static ArrayList<Action> getActions(Node node) {
 		State state = node.getState();
 		ArrayList<Action> actions = new ArrayList<Action>();
 		// for every queen (of a player?)
@@ -24,7 +23,7 @@ public class ActionFactory {
 		int[] queens; // array of queens
 		
 		boolean isBlack = true;
-		if (isBlack) { // assume AI is black...
+		if (isBlack) { // assume AI is white rn...
 			
 			queens = board.getBlackQueens();
 			
@@ -57,7 +56,7 @@ public class ActionFactory {
 	 * @param state
 	 * @return a list of valid actions
 	 */
-	public static ArrayList<Action> getActions(Node node) { 
+	public static ArrayList<Action> getActionsQuickly(Node node) { 
 		State state = node.getState();
 		
 		ArrayList<Action> actions = new ArrayList<Action>();

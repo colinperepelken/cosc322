@@ -50,6 +50,7 @@ public class StateSpace {
 		
 		generateChildNodesQuickly(root);
 		nextMove = maxUtilityNode.getAction();
+		System.out.println("h(n): " + Heuristic.enemyMoveCounting(maxUtilityNode));
 		
 		return nextMove;
 	}
@@ -75,8 +76,9 @@ public class StateSpace {
 
 			// keep a pointer to the
 			movesAvailable = Heuristic.enemyMoveCounting(child);
-			System.out.println("Moves counting: " + movesAvailable);
+			System.out.println("value: " + movesAvailable);
 			if (movesAvailable > maxMoves) {
+				System.out.println("New max: " + movesAvailable);
 				maxMoves = movesAvailable;
 				this.maxUtilityNode = new Node(seed, action, child.getState());
 			}
