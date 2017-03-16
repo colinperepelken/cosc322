@@ -36,6 +36,7 @@ public class Heuristic {
 		return h;
 	}
 	
+	
 	/**
 	 * Heuristic based on number of actions available to a state
 	 * @param n Node
@@ -66,7 +67,7 @@ public class Heuristic {
 		
 		int[] queens; // array of queens
 		
-		boolean isBlack = false;
+		boolean isBlack = n.isBlack();
 		if (isBlack) { // assume AI is black...
 			
 			queens = board.getBlackQueens();

@@ -26,6 +26,15 @@ public class State {
 		return new State(newBoard);
 	}
 	
+	// has an argument for if the moving black or white
+	public State getSuccessorState(Action action, boolean isWhite) {
+		char[] newArragment = this.board.getBoard().clone();
+		Board newBoard = new Board();
+		newBoard.setBoard(newArragment);
+		newBoard.makeMove(isWhite, action.getQueenStartIndex(), action.getQueenEndIndex(), action.getArrowIndex());
+		return new State(newBoard);
+	}
+	
 	public Board getBoard() {
 		return board;
 	}

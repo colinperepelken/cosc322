@@ -22,7 +22,7 @@ public class ActionFactory {
 		
 		int[] queens; // array of queens
 		
-		boolean isBlack = true;
+		boolean isBlack = node.isBlack();
 		if (isBlack) { // assume AI is white rn...
 			
 			queens = board.getBlackQueens();
@@ -37,7 +37,7 @@ public class ActionFactory {
 		for (int i = 0; i < queens.length; i++) { // for every queen of a player
 			for (int j = 0; j < board.getBoard().length; j++) { // for every valid queen move
 				for (int k = 0; k < board.getBoard().length; k++) { // for every valid arrow shot
-					if (board.validateMove(false, queens[i], j, k)) { // check if valid
+					if (board.validateMove(!isBlack, queens[i], j, k)) { // check if valid
 						actions.add(new Action(queens[i], j, k)); // add an action
 					}
 				}
@@ -47,8 +47,7 @@ public class ActionFactory {
 
 		return actions; // return the list of possible actions for the state
 	}	
-	
-	
+		
 	
 	/**
 	 * Generates valid actions given a board state

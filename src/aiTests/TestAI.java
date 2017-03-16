@@ -1,6 +1,6 @@
 package aiTests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
@@ -9,9 +9,9 @@ import org.junit.Test;
 import ai.Action;
 import ai.ActionFactory;
 import ai.Heuristic;
+import ai.MinimaxSearch;
 import ai.Node;
 import ai.State;
-import ai.StateSpace;
 import gameBoard.Board;
 
 /*
@@ -28,19 +28,29 @@ public class TestAI {
 	/*
 	 * Test heuristic mostActionsAvailable
 	 */
+//	@Test
+//	public void testMostActionsAvailable() {
+//		Board b = new Board();
+//		b.newGame();
+//		State s = new State(b);
+//		Node n = new Node(s);
+//		assertEquals(2048, Heuristic.mostActionsAvailable(n)); // initial state should have 640 actions available to a player
+//		
+//		// move a player
+//		b.makeMove(true, 96, 16, 15);
+//		s = new State(b);
+//		n = new Node(s);
+//		assertEquals(1580, Heuristic.mostActionsAvailable(n)); // # actions for black should decrease after this move
+//	}
+	
+	
 	@Test
-	public void testMostActionsAvailable() {
+	public void testMinimax() {
 		Board b = new Board();
 		b.newGame();
 		State s = new State(b);
-		Node n = new Node(s);
-		assertEquals(2048, Heuristic.mostActionsAvailable(n)); // initial state should have 640 actions available to a player
-		
-		// move a player
-		b.makeMove(true, 96, 16, 15);
-		s = new State(b);
-		n = new Node(s);
-		assertEquals(1580, Heuristic.mostActionsAvailable(n)); // # actions for black should decrease after this move
+		MinimaxSearch alg = new MinimaxSearch(0);
+		System.out.println("DECISION: " + alg.minimaxDecision(s));
 	}
 	
 	/*
@@ -76,13 +86,13 @@ public class TestAI {
 //		new StateSpace().generateChildNodesQuickly(n);
 //	}
 	
-	@Test
-	public void testSearchForNextAction() {
-		Board b = new Board();
-		b.newGame();
-		State s = new State(b);
-		System.out.println(new StateSpace().searchForNextAction(s).toString());
-	}
+//	@Test
+//	public void testSearchForNextAction() {
+//		Board b = new Board();
+//		b.newGame();
+//		State s = new State(b);
+//		System.out.println(new StateSpace().searchForNextAction(s).toString());
+//	}
 	
 //	@Test
 //	public void testGenerateChildNodes() {
