@@ -1,5 +1,6 @@
 package gameBoard;
 
+import ai.Action;
 import ai.State;
 import ai.StateSpace;
 import javafx.animation.KeyFrame;
@@ -414,8 +415,11 @@ public class BoardGUI extends Application {
 		ai.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent t) {
 				System.out.println("Computing AI move...");
-				System.out.println(new StateSpace().searchForNextActionQuickly(new State(currentGame.getBoard())).toStringCoordinates());
-				System.out.println(currentGame.getBoard().toString());
+				State s = new State(currentGame.getBoard());
+				Action a = new StateSpace().searchForNextActionQuickly(s);
+				
+				//System.out.println(new StateSpace().searchForNextActionQuickly(new State(currentGame.getBoard())).toStringCoordinates());
+				makeMove(a.getQueenStartIndex(), a.getQueenEndIndex(), a.getArrowIndex(), currentGame);
 			}
 		});
 		menuFile.getItems().addAll(ai);
