@@ -41,14 +41,9 @@ public class MinimaxSearch {
 		
 		ArrayList<Action> actions = ActionFactory.getActions(node); // generate all possible actions for this state
 		for (Action action : actions) {
-			int max = v;
-			int min = minValue(state.getSuccessorState(action, node.isWhite()), ++currentDepth);
 			
-			if (max > min) {
-				v = max;
-			} else {
-				v = min;
-			}
+			v = Math.max(v, minValue(state.getSuccessorState(action, node.isWhite()), ++currentDepth));
+		
 		}
 		System.out.println("Max returning v="+v);
 		return v;
@@ -59,18 +54,14 @@ public class MinimaxSearch {
 		
 		if (currentDepth == depthLimit) return Heuristic.enemyMoveCounting(node); // base case
 		
-		int v = Integer.MAX_VALUE; // negative infinity
+		int v = Integer.MAX_VALUE; // infinity
 		
 		ArrayList<Action> actions = ActionFactory.getActions(node); // generate all possible actions for this state
 		for (Action action : actions) {
 			int min = v;
 			int max = maxValue(state.getSuccessorState(action, !node.isBlack()), ++currentDepth);
 			
-			if (max > min) {
-				v = min;
-			} else {
-				v = max;
-			}
+			v = Math.min(v, maxValue(state.getSuccessorState(action, !node.isBlack()), ++currentDepth));
 		}
 		System.out.println("Min returning v="+v);
 		return v;
