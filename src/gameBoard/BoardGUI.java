@@ -245,11 +245,12 @@ public class BoardGUI extends Application {
 				}
 
 				boolean success = currentGame.getBoard().makeMove(whitePlayer, start, end, arrow);
-				currentGame.setTurnCount(currentGame.getTurnCount() + 1);
+				
 				
 				// If a successful move is made, increment the turn counter by
 				// one
 				if (success == true) {
+					currentGame.setTurnCount(currentGame.getTurnCount() + 1);
 					
 					
 					// AI turn
