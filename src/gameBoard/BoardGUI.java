@@ -26,6 +26,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import serverCommunications.ServerCommunicator;
 
 public class BoardGUI extends Application {
 	// Border Pane
@@ -47,10 +48,16 @@ public class BoardGUI extends Application {
 	static Label turnTimerLabel = new Label("Time: 0s");
 	// Initializes the timer variable
 	static int timer;
-
+	
+	public static game game;
+	
 	// Initializes the timer animation timeline
 	Timeline timeline = new Timeline(new KeyFrame(Duration.millis(1000), ae -> updateTimer()));
-
+	
+	public game getGame() {
+		return this.game;
+	}
+	
 	private class player {
 		// Attributes
 		private boolean whitePlayer;
@@ -145,7 +152,7 @@ public class BoardGUI extends Application {
 
 	}
 
-	private class game {
+	public class game {
 		
 		// Initializes the board data-structure
 		private Board board;
@@ -183,7 +190,7 @@ public class BoardGUI extends Application {
 		}
 
 		public Board getBoard() {
-			return board;
+			return this.board;
 		}
 
 		public void setBoard(Board board) {
@@ -226,7 +233,7 @@ public class BoardGUI extends Application {
 
 	}
 
-	private void makeMove(int start, int end, int arrow, game currentGame) {
+	public void makeMove(int start, int end, int arrow, game currentGame) {
 
 		Task<Void> task = new Task<Void>() {
 			@Override
@@ -238,18 +245,19 @@ public class BoardGUI extends Application {
 				}
 
 				boolean success = currentGame.getBoard().makeMove(whitePlayer, start, end, arrow);
-
+				currentGame.setTurnCount(currentGame.getTurnCount() + 1);
+				
 				// If a successful move is made, increment the turn counter by
 				// one
 				if (success == true) {
-					currentGame.setTurnCount(currentGame.getTurnCount() + 1);
+					
 					
 					// AI turn
 					System.out.println("Computing AI move...");
 					ai.State s = new ai.State(currentGame.getBoard());
 					Action a = new StateSpace().searchForNextActionQuickly(s);
 					
-					//System.out.println(new StateSpace().searchForNextActionQuickly(new State(currentGame.getBoard())).toStringCoordinates());
+//					System.out.println(new StateSpace().searchForNextActionQuickly(new State(currentGame.getBoard())).toStringCoordinates());
 					makeMove(a.getQueenStartIndex(), a.getQueenEndIndex(), a.getArrowIndex(), currentGame);
 				}
 
@@ -390,7 +398,7 @@ public class BoardGUI extends Application {
 		game currentGame = new game(true, true);
 		// Resets the internal board game datastructure to a new game
 		currentGame.getBoard().newGame();
-
+		this.game = currentGame;
 		// Draws the initial board-state
 		drawBoard(currentGame);
 
@@ -438,8 +446,6 @@ public class BoardGUI extends Application {
 
 		// Default window size and the root display attached to the window
 		Scene scene = new Scene(root, 1000, 800);
-		
-		 
 
 		// Adds the Style sheet
 		scene.getStylesheets().add("gameBoard/boardGUI.css");
@@ -447,13 +453,12 @@ public class BoardGUI extends Application {
 		primaryStage.setScene(scene);
 		primaryStage.show();
 		
-
-		
-
+		ServerCommunicator communicator = new ServerCommunicator("test", "test", this);
 	}
 
 	public static void main(String[] args) {
 		launch(args);
 	}
+
 
 }
