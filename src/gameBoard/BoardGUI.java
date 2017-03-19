@@ -454,7 +454,7 @@ public class BoardGUI extends Application {
 		primaryStage.setScene(scene);
 		primaryStage.show();
 		
-		ServerCommunicator communicator = new ServerCommunicator("test", "test", this);
+		ServerCommunicator communicator = new ServerCommunicator("cmoney", "test", this);
 	}
 
 	public static void main(String[] args) {

@@ -92,13 +92,16 @@ public class ServerCommunicator extends GamePlayer implements SendMoveCallback {
 			if (this.userName.equals(blackPlayerUserName)) {
 				// then we are black
 				this.isWhite = false;
+				System.out.println("WE ARE LACKKK");
 			} else {
 				// we are white
 				this.isWhite = true;
+				System.out.println("WE ARE WHITE");
 				// make the first move
 				ai.State s = new ai.State(this.boardGUI.getGame().getBoard());
 				Action a = new StateSpace().searchForNextActionQuickly(s);
 				this.boardGUI.makeMove(a.getQueenStartIndex(), a.getQueenEndIndex(), a.getArrowIndex(), this.boardGUI.getGame());
+				playerMove(a.getQueenStartIndex(), a.getQueenEndIndex(), a.getArrowIndex());
 			}
 
 			System.out.println("Game State: " + msgDetails.get(AmazonsGameMessage.GAME_STATE));
