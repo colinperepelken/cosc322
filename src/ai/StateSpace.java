@@ -35,7 +35,6 @@ public class StateSpace {
 
 		// set the nextMove that produced the maxUtilityNode branch
 		nextMove = maxUtilityNode.getAction();
-		System.out.println("h(n): " + Heuristic.enemyMoveCounting(maxUtilityNode));
 
 		// return the nextMove decided on in this way
 		return nextMove;
@@ -50,7 +49,6 @@ public class StateSpace {
 		
 		generateChildNodesQuickly(root);
 		nextMove = maxUtilityNode.getAction();
-		System.out.println("h(n): " + Heuristic.enemyMoveCounting(maxUtilityNode));
 		
 		return nextMove;
 	}
@@ -76,9 +74,7 @@ public class StateSpace {
 
 			// keep a pointer to the
 			movesAvailable = Heuristic.enemyMoveCounting(child);
-			System.out.println("value: " + movesAvailable);
 			if (movesAvailable > maxMoves) {
-				System.out.println("New max: " + movesAvailable);
 				maxMoves = movesAvailable;
 				this.maxUtilityNode = new Node(seed, action, child.getState());
 			}
@@ -106,14 +102,13 @@ public class StateSpace {
 				 */
 				// currently using the depth as a evaluation function for
 				// pruning
-				if (currentDepth < this.bestDepth && currentDepth < 12) {
+				if (currentDepth < this.bestDepth && currentDepth < 5) {
 					Node newSeed = new Node(seed, parentAction, childState);
 
 					// currently just finding the node with the most actions
 					// available below depth limit
 					// as starting point for backtracking
 					int numActions = Heuristic.enemyMoveCounting(newSeed);
-					System.out.println("# movecount: " + numActions);
 					if (newSeed.isWhite() && numActions > this.alpha) {
 						this.alpha = numActions;
 						this.maxUtilityNode = newSeed;

@@ -4,24 +4,30 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import ai.Action;
+import ai.State;
+import ai.StateSpace;
+import gameBoard.Board;
+import gameBoard.BoardGUI;
+import gameBoard.BoardGUI.game;
 import ygraphs.ai.smart_fox.GameMessage;
 import ygraphs.ai.smart_fox.games.AmazonsGameMessage;
 import ygraphs.ai.smart_fox.games.GameClient;
 import ygraphs.ai.smart_fox.games.GamePlayer;
 
 //Gameclient will handle login and sending messages, gameplayer handles receiving moves 
-public class ServerCommunicator extends GamePlayer {
+public class ServerCommunicator extends GamePlayer implements SendMoveCallback {
 	private GameClient gameClient;
 	public String userName = null;
 	private boolean gameStarted = false;
-
+	private BoardGUI boardGUI;
+	private Action action;
+	private State state;
+	private StateSpace stateSpace = new StateSpace();
+	
+	
 	// TODO: add object to communicate received game moves with (can be through
 	// interface)
-
-	public static void main(String[] args) {
-		ServerCommunicator communicator = new ServerCommunicator("cmoney", "cmoney");
-
-	}
 
 	public void connect() {
 		GameClient gameClient = new GameClient("", "", this);
@@ -36,10 +42,10 @@ public class ServerCommunicator extends GamePlayer {
 	public String blackPlayerUserName;
 	public String whitePlayerUserName;
 
-	public ServerCommunicator(String userName, String passwd) {
+	public ServerCommunicator(String userName, String passwd, BoardGUI boardGUI) {
 		this.userName = userName;
+		this.boardGUI = boardGUI;
 		connectToServer(userName, passwd);
-
 	}
 
 	private void connectToServer(String name, String passwd) {
@@ -83,7 +89,7 @@ public class ServerCommunicator extends GamePlayer {
 			// TODO: if chosen to be first moving player (check color), make
 			// move
 
-			System.out.println("Game State: " + msgDetails.get(AmazonsGameMessage.GAME_STATE).toString());
+			System.out.println("Game State: " + msgDetails.get(AmazonsGameMessage.GAME_STATE));
 
 		} else if (messageType.equals(GameMessage.GAME_ACTION_MOVE)) {
 			System.out.println("OnHandleGameMessage.GAME_ACTION_MOVE");
@@ -99,10 +105,28 @@ public class ServerCommunicator extends GamePlayer {
 		queenCurrent = (ArrayList<Integer>) msgDetails.get(AmazonsGameMessage.QUEEN_POS_CURR);
 		queenNew = (ArrayList<Integer>) msgDetails.get(AmazonsGameMessage.Queen_POS_NEXT);
 		arrow = (ArrayList<Integer>) msgDetails.get(AmazonsGameMessage.ARROW_POS);
-		System.out.println("QCurr: " + queenCurrent);
-		System.out.println("QNew: " + queenNew);
-		System.out.println("Arrow: " + arrow);
+		
+		int startQueenPosition = ((10 - queenCurrent.get(0)) * 10) + (queenCurrent.get(1) - 1);
+		int endQueenPosition = ((10 - queenNew.get(0)) * 10) + (queenNew.get(1)-1);
+		int arrowPosition = ((10 -arrow.get(0)) * 10)+ (arrow.get(1)-1);
+		
+		System.out.println("QCurr: " + startQueenPosition);
+		System.out.println("QNew: " + endQueenPosition);
+		System.out.println("Arrow: " + arrowPosition);
+		
+		this.boardGUI.makeMove(startQueenPosition, endQueenPosition, arrowPosition, this.boardGUI.getGame());
+		
+		this.action = this.stateSpace.searchForNextActionQuickly(new State(this.boardGUI.game.getBoard()));
+		System.out.println(this.action.toString());
+		
+		startQueenPosition = this.action.getQueenStartIndex();
+		endQueenPosition = this.action.getQueenEndIndex();
+		arrowPosition = this.action.getArrowIndex();
+		
+		this.boardGUI.makeMove(startQueenPosition, endQueenPosition, arrowPosition, this.boardGUI.getGame());
 
+		playerMove(this.action.getQueenStartIndex(), this.action.getQueenEndIndex(), this.action.getArrowIndex());
+		
 		// TODO: use object to communicate received game moves with (can be
 		// through interface)
 	}
@@ -123,25 +147,33 @@ public class ServerCommunicator extends GamePlayer {
 	 * @param qfc
 	 *            queen original col
 	 */
-
+	@Override
 	public void playerMove(int startPos, int endPos, int arrowPos) {
-
+		System.out.println(startPos + " " + endPos + " " + arrowPos);
 		int[] qf = new int[2];
-
-		qf[0] = (10 - Integer.valueOf(String.valueOf(startPos).charAt(0)));
-		qf[1] = (Integer.valueOf(String.valueOf(startPos).charAt(1)) - 1);
+		
+		String start = (startPos < 10) ?  "0" +  startPos : "" + startPos;
+		String end = (endPos < 10) ?  "0" + endPos : "" + endPos;
+		String arrow = (arrowPos < 10) ?  "0" + arrowPos : "" + arrowPos;
+		
+		System.out.println(start + " " + end + " " + arrow);
+		
+		qf[0] = (10 - Integer.parseInt(start.substring(0, 1)));
+		qf[1] = (Integer.parseInt(start.substring(1, 2)) + 1);
 
 		int[] qn = new int[2];
-		qn[0] = (10 - Integer.valueOf(String.valueOf(endPos).charAt(0)));
-		qn[1] = (Integer.valueOf(String.valueOf(arrowPos).charAt(1)) - 1);
+		qn[0] = (10 - Integer.parseInt(end.substring(0, 1)));
+		qn[1] = (Integer.parseInt(end.substring(1, 2)) + 1);
 
 		int[] ar = new int[2];
-		ar[0] = (10 - Integer.valueOf(String.valueOf(arrowPos).charAt(0)));
-		ar[1] = (Integer.valueOf(String.valueOf(arrowPos).charAt(1)) - 1);
-
+		ar[0] = (10 - Integer.parseInt(arrow.substring(0, 1)));
+		ar[1] = (Integer.parseInt(arrow.substring(1, 2)) + 1);
+		
+		System.out.println(qf[0] + "," + qf[1] +  " " + qn[0] + "," + qn[1] + " " + ar[0] + "," + ar[1]);
+		
 		// To send a move message, call this method with the required data
+		
 		sendMove(qf, qn, ar);
-
 	}
 
 	public boolean handleMessage(String msg) {
@@ -151,9 +183,9 @@ public class ServerCommunicator extends GamePlayer {
 
 	public List<String> listRooms() {
 		List<String> rooms = gameClient.getRoomList();
-		for (String room : rooms) {
+		/*for (String room : rooms) {
 			System.out.println(room);
-		}
+		}*/
 
 		return rooms;
 	}
