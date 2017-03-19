@@ -2,6 +2,8 @@ package ai;
 
 import java.util.List;
 
+import serverCommunications.ServerCommunicator;
+
 /**
  * A node in the state space.
  * 
@@ -63,10 +65,10 @@ public class Node {
 	}
 	
 	public boolean isBlack() {
-		return this.type == Node.Types.MIN_NODE_TYPE;
+		return ServerCommunicator.isWhite == false;
 	}
 	
 	public boolean isWhite() {
-		return this.type == Node.Types.MAX_NODE_TYPE;
+		return  ServerCommunicator.isWhite == true;
 	}
 }

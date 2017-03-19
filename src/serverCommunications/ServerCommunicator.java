@@ -24,6 +24,7 @@ public class ServerCommunicator extends GamePlayer implements SendMoveCallback {
 	private Action action;
 	private State state;
 	private StateSpace stateSpace = new StateSpace();
+	public static boolean isWhite;
 	
 	
 	// TODO: add object to communicate received game moves with (can be through
@@ -79,7 +80,7 @@ public class ServerCommunicator extends GamePlayer implements SendMoveCallback {
 	@Override
 	public boolean handleGameMessage(String messageType, Map<String, Object> msgDetails) {
 		System.out.println("OnHandleGameMessage");
-		if (messageType.equals(GameMessage.GAME_ACTION_START)) {
+		if (messageType.equals(GameMessage.GAME_ACTION_START)) { // GAME IS STARTING
 			// TODO: Find a way to pass which player is which into the boardGUI
 			// Class
 			blackPlayerUserName = (String) msgDetails.get(AmazonsGameMessage.PLAYER_BLACK);
@@ -88,10 +89,21 @@ public class ServerCommunicator extends GamePlayer implements SendMoveCallback {
 			System.out.println(blackPlayerUserName);
 			// TODO: if chosen to be first moving player (check color), make
 			// move
+			if (this.userName.equals(blackPlayerUserName)) {
+				// then we are black
+				this.isWhite = false;
+			} else {
+				// we are white
+				this.isWhite = true;
+				// make the first move
+				ai.State s = new ai.State(this.boardGUI.getGame().getBoard());
+				Action a = new StateSpace().searchForNextActionQuickly(s);
+				this.boardGUI.makeMove(a.getQueenStartIndex(), a.getQueenEndIndex(), a.getArrowIndex(), this.boardGUI.getGame());
+			}
 
 			System.out.println("Game State: " + msgDetails.get(AmazonsGameMessage.GAME_STATE));
 
-		} else if (messageType.equals(GameMessage.GAME_ACTION_MOVE)) {
+		} else if (messageType.equals(GameMessage.GAME_ACTION_MOVE)) { // RECEIVED A MOVE
 			System.out.println("OnHandleGameMessage.GAME_ACTION_MOVE");
 			handleOpponentMove(msgDetails);
 		}

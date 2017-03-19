@@ -254,12 +254,12 @@ public class BoardGUI extends Application {
 					
 					
 					// AI turn
-					System.out.println("Computing AI move...");
-					ai.State s = new ai.State(currentGame.getBoard());
-					Action a = new StateSpace().searchForNextActionQuickly(s);
+					//System.out.println("Computing AI move...");
+					//ai.State s = new ai.State(currentGame.getBoard());
+					//Action a = new StateSpace().searchForNextActionQuickly(s);
 					
 //					System.out.println(new StateSpace().searchForNextActionQuickly(new State(currentGame.getBoard())).toStringCoordinates());
-					makeMove(a.getQueenStartIndex(), a.getQueenEndIndex(), a.getArrowIndex(), currentGame);
+					//makeMove(a.getQueenStartIndex(), a.getQueenEndIndex(), a.getArrowIndex(), currentGame);
 				}
 
 				return null;
