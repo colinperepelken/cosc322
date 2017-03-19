@@ -109,6 +109,9 @@ public class ServerCommunicator extends GamePlayer implements SendMoveCallback {
 		} else if (messageType.equals(GameMessage.GAME_ACTION_MOVE)) { // RECEIVED A MOVE
 			System.out.println("OnHandleGameMessage.GAME_ACTION_MOVE");
 			handleOpponentMove(msgDetails);
+		} else if (messageType.equals(GameMessage.GAME_STATE_PLAYER_LOST)) { // GAME OVER
+			this.logout();
+			System.exit(0);
 		}
 
 		return true;
@@ -211,6 +214,7 @@ public class ServerCommunicator extends GamePlayer implements SendMoveCallback {
 	}
 
 	public void logout() {
+		System.out.println("Logging out...");
 		gameClient.logout();
 	}
 }

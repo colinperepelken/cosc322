@@ -52,7 +52,7 @@ public class Heuristic {
 	 * @return a negative integer which represents the number of moves an enemy has
 	 */
 	public static int enemyMoveCounting(Node n) {
-		return -moveCounting(n);
+		return -moveCounting(n, !n.isBlack());
 	}
 	
 	/**
@@ -60,14 +60,13 @@ public class Heuristic {
 	 * @param n Node
 	 * @return value h(n) - # of squares the queens can move to
 	 */
-	public static int moveCounting(Node n) {
+	public static int moveCounting(Node n, boolean isBlack) {
 		
 		State state = n.getState();
 		Board board = state.getBoard(); // get the board object of the state
 		
 		int[] queens; // array of queens
 		
-		boolean isBlack = n.isBlack();
 		if (isBlack) { // assume AI is black...
 			
 			queens = board.getBlackQueens();
