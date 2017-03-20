@@ -44,11 +44,12 @@ public class StateSpace {
 	 * Uses the generate nodes quickly method
 	 */
 	public Action searchForNextActionQuickly(State seed) {
+		this.maxUtilityNode = null;
 		Node root = new Node(seed);
 		Action nextMove;
 		
 		generateChildNodesQuickly(root);
-		nextMove = maxUtilityNode.getAction();
+		nextMove = maxUtilityNode == null ? null : maxUtilityNode.getAction();
 		
 		return nextMove;
 	}

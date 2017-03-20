@@ -135,6 +135,12 @@ public class ServerCommunicator extends GamePlayer implements SendMoveCallback {
 		this.boardGUI.makeMove(startQueenPosition, endQueenPosition, arrowPosition, this.boardGUI.getGame());
 		
 		this.action = this.stateSpace.searchForNextActionQuickly(new State(this.boardGUI.game.getBoard()));
+		
+		if(this.action == null) {
+			System.exit(0);
+			logout();
+		}
+		
 		System.out.println(this.action.toString());
 		
 		startQueenPosition = this.action.getQueenStartIndex();
