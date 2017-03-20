@@ -41,18 +41,9 @@ public class BoardGUI extends Application {
 	static Image blkQueenImage = new Image("blkQueen.png", 64, 64, true, false);
 	static Image whtQueenImage = new Image("whtQueen.png", 64, 64, true, false);
 	static Image arrowImage = new Image("arrow.png", 64, 64, true, false);
-
-	// Creates the sidebar labels
-	static Label activePlayer = new Label("Player: White");
-	static Label turnCountLabel = new Label("Turn: 1");
-	static Label turnTimerLabel = new Label("Time: 0s");
-	// Initializes the timer variable
-	static int timer;
 	
 	public static game game;
 	
-	// Initializes the timer animation timeline
-	Timeline timeline = new Timeline(new KeyFrame(Duration.millis(1000), ae -> updateTimer()));
 	
 	public game getGame() {
 		return this.game;
@@ -65,71 +56,7 @@ public class BoardGUI extends Application {
 		private int[] bestMove = new int[3];
 		private boolean moveCalcFinished = false;
 
-		// Methods
-		void computeMove() {
-			Task<Void> AIComputationTask = new Task<Void>() {
-				@Override
-				public Void call() {
-					// This will create a new thread for the AI computations so
-					// that the UI
-					// Doesn't completely freeze up.
-					// ====================================================================================================
-					// THE AI STUFF WILL GO HERE
-					// ITs RESULTS SHOULD BE PASSED TO THE makeMove(int
-					// startPos, int endPos, int arrowTarget)
-					// IT SHOULD WORK JUST FINE HOWEVER IF SOMEONE MAKES A MOVE
-					// USING THE MOUSE IT WILL BUGGER THINGS UP
-					// MIGHT ADD A "Human vs Human or Human vs AI" Thing at some
-					// point to combat this
-					// Note Make a Move auto-switches between who is making the
-					// move White then Black then White
-					// so for AI vs AI there has to be something to see who is
-					// sending the move and then maybe reject passing
-					// the move to the makeMove method.
-					// ====================================================================================================
 
-					// Results of the AI Calculations should be put into this
-					// arraw
-					// bestMove[0] = queenToMove;
-					// bestMove[1] = targetSquare;
-					// bestMove[2] = arrowSquare;
-					
-					// 
-					
-					moveCalcFinished = true;
-
-					return null;
-				}
-			};
-
-			Platform.runLater(new Runnable() {
-				@Override
-				public void run() {
-					// Any changes that need to be made on the UI have to be
-					// passed
-					// to the UI thread in here
-				}
-			});
-			// Launches the AI computation task
-			new Thread(AIComputationTask).start();
-
-		}
-
-		public boolean isCalculated() {
-			return moveCalcFinished;
-		}
-
-		public int[] getBestMove() {
-			return bestMove;
-		}
-
-		public void setBestMove(int[] bestMove) {
-			this.bestMove = bestMove;
-		}
-
-		public boolean getWhitePlayer() {
-			return whitePlayer;
-		}
 
 		public void setWhitePlayer(boolean whitePlayer) {
 			this.whitePlayer = whitePlayer;
@@ -223,21 +150,9 @@ public class BoardGUI extends Application {
 
 	}
 
-	private void updateTimer() {
-
-		turnTimerLabel.setText("Time: " + timer + "s");
-		timer++;
-		if (timer > 30) {
-			turnTimerLabel.setText("Times Up");
-		}
-
-	}
 
 	public void makeMove(int start, int end, int arrow, game currentGame) {
 
-		Task<Void> task = new Task<Void>() {
-			@Override
-			public Void call() {
 				// Gets the current player based on the turn number
 				boolean whitePlayer = false;
 				if (currentGame.getTurnCount() % 2 == 0) {
@@ -262,44 +177,12 @@ public class BoardGUI extends Application {
 					//makeMove(a.getQueenStartIndex(), a.getQueenEndIndex(), a.getArrowIndex(), currentGame);
 				}
 
-				return null;
-			}
-		};
-
-		Platform.runLater(new Runnable() {
-			@Override
-			public void run() {
-				// Called to make sure there are no timeline animations running
-				// in the background (mem-leak, eats CPU)
-				timeline.stop();
-				// Sets the number of a times a 1s animation to update the timer
-				// will run
-				timeline.setCycleCount(30);
-				// Starts the timer
-				timeline.play();
-				// Sets the value used to set the string to 1 (since 1 cycle of
-				// the animation will occure before updating)
-				timer = 1;
-				// Wipes the chessboard clear
-				chessBoard.getChildren().clear();
-				// Redraws a new chessboard based on the previous move
-				drawBoard(currentGame);
-
-			}
-		});
-
-		new Thread(task).start();
+	
 
 	}
 
 	private void drawBoard(game currentGame) {
 		Board gameBoard = currentGame.getBoard();
-		if (currentGame.getCurrentPlayer().getWhitePlayer()) {
-			activePlayer.setText("Player: White");
-		} else {
-			activePlayer.setText("Player: Black");
-		}
-		turnCountLabel.setText("Turn: " + currentGame.getTurnCount());
 		// Creates the empty game board
 		for (int rowIndex = 0; rowIndex < currentGame.boardSize; rowIndex++) {
 			for (int colIndex = 0; colIndex < currentGame.boardSize; colIndex++) {
@@ -412,14 +295,8 @@ public class BoardGUI extends Application {
 		// Border Pane -> VBox
 		VBox leftBar = new VBox();
 		leftBar.setAlignment(Pos.TOP_CENTER);
-		leftBar.getChildren().add(activePlayer);
-		leftBar.getChildren().add(turnCountLabel);
-		leftBar.getChildren().add(turnTimerLabel);
 
-		// adds the style to the activePlayer label
-		activePlayer.getStyleClass().add("sidebar-label");
-		turnCountLabel.getStyleClass().add("sidebar-label");
-		turnTimerLabel.getStyleClass().add("sidebar-label");
+
 		
 		
 		// menu bar stuff
@@ -454,7 +331,7 @@ public class BoardGUI extends Application {
 		primaryStage.setScene(scene);
 		primaryStage.show();
 		
-		ServerCommunicator communicator = new ServerCommunicator("smoney", "test", this);
+		ServerCommunicator communicator = new ServerCommunicator("cmoney", "test", this);
 	}
 
 	public static void main(String[] args) {
