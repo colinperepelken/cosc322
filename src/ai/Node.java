@@ -18,7 +18,7 @@ public class Node {
 	private List<Node> children; 
 	private State state; 
 	private Action action; 
-	private Types type;
+	public boolean isMax;
 	
 	/**
 	 * Constructor
@@ -30,7 +30,7 @@ public class Node {
 		this.parent = parent;
 		this.action = action;
 		this.state = state;
-		this.type = (parent.type == Node.Types.MAX_NODE_TYPE) ? Node.Types.MIN_NODE_TYPE :  Node.Types.MAX_NODE_TYPE; 
+		this.isMax = !parent.isMax;
 	}
 	
 	/**
@@ -39,7 +39,7 @@ public class Node {
 	 */
 	public Node(State state) {
 		this.state = state;
-		this.type = Node.Types.MAX_NODE_TYPE;
+		this.isMax = true;
 	}
 	
 	/* GETTERS AND SETTERS */
@@ -60,8 +60,8 @@ public class Node {
 		return action;
 	}
 	
-	public Types getType() {
-		return this.type;
+	public boolean isMax() {
+		return this.isMax;
 	}
 	
 	public boolean isBlack() {

@@ -433,10 +433,10 @@ public class BoardGUI extends Application {
 			public void handle(ActionEvent t) {
 				System.out.println("Computing AI move...");
 				State s = new State(currentGame.getBoard());
-				Action a = new StateSpace().searchForNextActionQuickly(s);
+				//Action a = new StateSpace().searchForNextActionQuickly(s);
 				
 				//System.out.println(new StateSpace().searchForNextActionQuickly(new State(currentGame.getBoard())).toStringCoordinates());
-				makeMove(a.getQueenStartIndex(), a.getQueenEndIndex(), a.getArrowIndex(), currentGame);
+			//	makeMove(a.getQueenStartIndex(), a.getQueenEndIndex(), a.getArrowIndex(), currentGame);
 			}
 		});
 		menuFile.getItems().addAll(ai);

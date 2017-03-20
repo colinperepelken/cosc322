@@ -9,7 +9,7 @@ public class Main {
 		Board b = new Board();
 		b.newGame();
 		State s = new State(b);
-		new StateSpace().searchForNextAction(s);
+		//new StateSpace().searchForNextAction(s);
 	}
 
 }
