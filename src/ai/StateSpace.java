@@ -7,6 +7,7 @@ public class StateSpace {
 	private int bestDepth = Integer.MAX_VALUE;
 	private int alpha = 0;
 	private int beta = 0;
+	public static int turnCounter = 0;
 
 	// accepts a state representing the current arrangement of the board
 	// action available according to the evaluation function
@@ -51,6 +52,7 @@ public class StateSpace {
 		generateChildNodesQuickly(root);
 		nextMove = maxUtilityNode == null ? null : maxUtilityNode.getAction();
 		
+		turnCounter++;
 		return nextMove;
 	}
 
@@ -74,7 +76,11 @@ public class StateSpace {
 			child = new Node(parentState.getSuccessorState(action));
 
 			// keep a pointer to the
-			movesAvailable = Heuristic.enemyMoveCounting(child);
+			if (turnCounter < 25) {
+				movesAvailable = Heuristic.enemyMoveCounting(child);
+			} else {
+				movesAvailable = Heuristic.moveCounting(child, child.isBlack());
+			}
 			if (movesAvailable > maxMoves) {
 				maxMoves = movesAvailable;
 				this.maxUtilityNode = new Node(seed, action, child.getState());

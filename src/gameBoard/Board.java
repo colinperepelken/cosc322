@@ -29,6 +29,8 @@ public class Board {
 	final public static char BLACKQUEEN = 'B';
 	final public static char WHITEQUEEN = 'W';
 	final public static char ARROW = '+';
+	
+	private static int arrow_bug_fix;
 
 	// Methods
 	public char getSquare(int squareIndex) {
@@ -126,6 +128,7 @@ public class Board {
 		}
 
 	}
+	
 
 	// Creates a printable version of the board (10 row paragraph string)
 	public String toString() {
@@ -237,25 +240,25 @@ public class Board {
 
 		while (i < destRow) {
 			i++;
-			if (getSquare(getIndex(i, j)) != '_') { // it is blocked
+			if (getSquare(getIndex(i, j)) != '_' || getIndex(i, j) != arrow_bug_fix) {
 				return true;
 			}
 		}
 		while (i > destRow) {
 			i--;
-			if (getSquare(getIndex(i, j)) != '_') {
+			if (getSquare(getIndex(i, j)) != '_' || getIndex(i, j) != arrow_bug_fix) {
 				return true;
 			}
 		}
 		while (j < destCol) {
 			j++;
-			if (getSquare(getIndex(i, j)) != '_') {
+			if (getSquare(getIndex(i, j)) != '_' || getIndex(i, j) != arrow_bug_fix) {
 				return true;
 			}
 		}
 		while (j > destCol) {
 			j--;
-			if (getSquare(getIndex(i, j)) != '_') {
+			if (getSquare(getIndex(i, j)) != '_' || getIndex(i, j) != arrow_bug_fix) {
 				return true;
 			}
 		}
@@ -281,7 +284,7 @@ public class Board {
 			i++;
 			if (j < destCol) j++;
 			else j--;
-			if (getSquare(getIndex(i, j)) != '_') {
+			if (getSquare(getIndex(i, j)) != '_' || getIndex(i, j) != arrow_bug_fix) {
 				return true;
 			}
 		}
@@ -290,7 +293,7 @@ public class Board {
 			i--;
 			if (j < destCol) j++;
 			else j--;
-			if (getSquare(getIndex(i, j)) != '_') {
+			if (getSquare(getIndex(i, j)) != '_' || getIndex(i, j) != arrow_bug_fix) {
 				return true;
 			}
 		}
@@ -301,6 +304,7 @@ public class Board {
 
 	public boolean validateMove(boolean whitePlayer, int startIndex, int endIndex, int arrowIndex) {
 		boolean hasQueen = false;
+		arrow_bug_fix = startIndex;
 
 		// Checks to see if there is a queen in the starting position
 		if (whitePlayer == true) {

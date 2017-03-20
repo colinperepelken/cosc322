@@ -251,7 +251,7 @@ public class BoardGUI extends Application {
 				// one
 				if (success == true) {
 					currentGame.setTurnCount(currentGame.getTurnCount() + 1);
-					
+					System.out.println(currentGame.getBoard().toString());
 					
 					// AI turn
 					//System.out.println("Computing AI move...");
@@ -294,7 +294,7 @@ public class BoardGUI extends Application {
 
 	private void drawBoard(game currentGame) {
 		Board gameBoard = currentGame.getBoard();
-		if (currentGame.getCurrentPlayer().getWhitePlayer()) {
+		if (currentGame.getTurnCount()%2==0) {
 			activePlayer.setText("Player: White");
 		} else {
 			activePlayer.setText("Player: Black");
@@ -454,7 +454,7 @@ public class BoardGUI extends Application {
 		primaryStage.setScene(scene);
 		primaryStage.show();
 		
-		ServerCommunicator communicator = new ServerCommunicator("smoney", "test", this);
+		ServerCommunicator communicator = new ServerCommunicator("$$ money team $$", "test", this);
 	}
 
 	public static void main(String[] args) {

@@ -73,7 +73,7 @@ public class ServerCommunicator extends GamePlayer implements SendMoveCallback {
 		
 		// TODO: Replace the 6 with a method that gets the room number from
 		// somewhere
-		this.gameClient.joinRoom(rooms.get(2));
+		this.gameClient.joinRoom(rooms.get(4)); // CHANGE ROOM HERE <<<<<<<<<<<<<<<<<<<<--------------------------------------------------------------------------
 		System.out.println("logged in");
 	}
 

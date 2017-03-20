@@ -44,7 +44,7 @@ public class ServerCom extends GamePlayer {
 
 		// TODO: Replace the 6 with a method that gets the room number from
 		// somewhere
-		this.gameClient.joinRoom(rooms.get(2));
+		this.gameClient.joinRoom(rooms.get(4));
 	}
 
 	@Override
