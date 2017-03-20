@@ -240,25 +240,25 @@ public class Board {
 
 		while (i < destRow) {
 			i++;
-			if (getSquare(getIndex(i, j)) != '_' || getIndex(i, j) != arrow_bug_fix) {
+			if (getSquare(getIndex(i, j)) != '_') {
 				return true;
 			}
 		}
 		while (i > destRow) {
 			i--;
-			if (getSquare(getIndex(i, j)) != '_' || getIndex(i, j) != arrow_bug_fix) {
+			if (getSquare(getIndex(i, j)) != '_') {
 				return true;
 			}
 		}
 		while (j < destCol) {
 			j++;
-			if (getSquare(getIndex(i, j)) != '_' || getIndex(i, j) != arrow_bug_fix) {
+			if (getSquare(getIndex(i, j)) != '_') {
 				return true;
 			}
 		}
 		while (j > destCol) {
 			j--;
-			if (getSquare(getIndex(i, j)) != '_' || getIndex(i, j) != arrow_bug_fix) {
+			if (getSquare(getIndex(i, j)) != '_') {
 				return true;
 			}
 		}
@@ -284,7 +284,7 @@ public class Board {
 			i++;
 			if (j < destCol) j++;
 			else j--;
-			if (getSquare(getIndex(i, j)) != '_' || getIndex(i, j) != arrow_bug_fix) {
+			if (getSquare(getIndex(i, j)) != '_') {
 				return true;
 			}
 		}
@@ -293,7 +293,7 @@ public class Board {
 			i--;
 			if (j < destCol) j++;
 			else j--;
-			if (getSquare(getIndex(i, j)) != '_' || getIndex(i, j) != arrow_bug_fix) {
+			if (getSquare(getIndex(i, j)) != '_') {
 				return true;
 			}
 		}

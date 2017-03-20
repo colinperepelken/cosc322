@@ -76,7 +76,7 @@ public class StateSpace {
 			child = new Node(parentState.getSuccessorState(action));
 
 			// keep a pointer to the
-			if (turnCounter < 25) {
+			if (turnCounter < 30) {
 				movesAvailable = Heuristic.enemyMoveCounting(child);
 			} else {
 				movesAvailable = Heuristic.moveCounting(child, child.isBlack());
