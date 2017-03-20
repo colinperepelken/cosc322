@@ -232,6 +232,64 @@ public class BoardGUI extends Application {
 		}
 
 	}
+	public void makeMoveOpp(int start, int end, int arrow, game currentGame) {
+
+		Task<Void> task = new Task<Void>() {
+			@Override
+			public Void call() {
+				// Gets the current player based on the turn number
+				boolean whitePlayer = false;
+				if (currentGame.getTurnCount() % 2 == 0) {
+					whitePlayer = true;
+				}
+
+				boolean success = currentGame.getBoard().makeMoveOpp(whitePlayer, start, end, arrow);
+				
+				
+				// If a successful move is made, increment the turn counter by
+				// one
+				if (success == true) {
+					currentGame.setTurnCount(currentGame.getTurnCount() + 1);
+					System.out.println(currentGame.getBoard().toString());
+					
+					// AI turn
+					//System.out.println("Computing AI move...");
+					//ai.State s = new ai.State(currentGame.getBoard());
+					//Action a = new StateSpace().searchForNextActionQuickly(s);
+					
+//					System.out.println(new StateSpace().searchForNextActionQuickly(new State(currentGame.getBoard())).toStringCoordinates());
+					//makeMove(a.getQueenStartIndex(), a.getQueenEndIndex(), a.getArrowIndex(), currentGame);
+				}
+
+				return null;
+			}
+		};
+
+		Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+				// Called to make sure there are no timeline animations running
+				// in the background (mem-leak, eats CPU)
+				timeline.stop();
+				// Sets the number of a times a 1s animation to update the timer
+				// will run
+				timeline.setCycleCount(30);
+				// Starts the timer
+				timeline.play();
+				// Sets the value used to set the string to 1 (since 1 cycle of
+				// the animation will occure before updating)
+				timer = 1;
+				// Wipes the chessboard clear
+				chessBoard.getChildren().clear();
+				// Redraws a new chessboard based on the previous move
+				drawBoard(currentGame);
+
+			}
+		});
+
+		new Thread(task).start();
+
+	}
 
 	public void makeMove(int start, int end, int arrow, game currentGame) {
 

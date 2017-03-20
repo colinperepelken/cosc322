@@ -73,7 +73,7 @@ public class ServerCommunicator extends GamePlayer implements SendMoveCallback {
 		
 		// TODO: Replace the 6 with a method that gets the room number from
 		// somewhere
-		this.gameClient.joinRoom(rooms.get(4)); // CHANGE ROOM HERE <<<<<<<<<<<<<<<<<<<<--------------------------------------------------------------------------
+		this.gameClient.joinRoom(rooms.get(5)); // CHANGE ROOM HERE <<<<<<<<<<<<<<<<<<<<--------------------------------------------------------------------------
 		System.out.println("logged in");
 	}
 
@@ -132,7 +132,7 @@ public class ServerCommunicator extends GamePlayer implements SendMoveCallback {
 		System.out.println("QNew: " + endQueenPosition);
 		System.out.println("Arrow: " + arrowPosition);
 		
-		this.boardGUI.makeMove(startQueenPosition, endQueenPosition, arrowPosition, this.boardGUI.getGame());
+		this.boardGUI.makeMoveOpp(startQueenPosition, endQueenPosition, arrowPosition, this.boardGUI.getGame());
 		
 		this.action = this.stateSpace.searchForNextActionQuickly(new State(this.boardGUI.game.getBoard()));
 		
