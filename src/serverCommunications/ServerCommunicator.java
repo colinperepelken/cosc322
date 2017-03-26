@@ -213,10 +213,26 @@ public class ServerCommunicator extends GamePlayer implements SendMoveCallback {
 
 		return rooms;
 	}
+private boolean moveHasAlreadyBeenMade(int[] start, int[] end, int[] arrow) {
+		if (oldMove[0] == start[0] && oldMove[1] == start[1] && oldMove[2] == end[0] && oldMove[3] == end[1]
+				&& oldMove[4] == arrow[0] && oldMove[5] == arrow[1]) {
+			return true;
+		} else {
+			oldMove[0] = start[0];
+			oldMove[1] = start[1];
+			oldMove[2] = end[0];
+			oldMove[3] = end[1];
+			oldMove[4] = arrow[0];
+			oldMove[5] = arrow[1];
+			return false;
+		}
 
+	}
 	// TODO: will have to be called when a move is made (through callback)
 	public void sendMove(int[] queenPosCurrent, int[] queenPosNew, int[] arrowPos) {
-		gameClient.sendMoveMessage(queenPosCurrent, queenPosNew, arrowPos);
+		if (moveHasAlreadyBeenMade(queenPosCurrent, queenPosNew, arrowPos) == false) {
+			gameClient.sendMoveMessage(queenPosCurrent, queenPosNew, arrowPos);
+		}
 	}
 
 	public void logout() {
