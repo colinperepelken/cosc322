@@ -25,6 +25,7 @@ public class ServerCommunicator extends GamePlayer implements SendMoveCallback {
 	private State state;
 	private StateSpace stateSpace = new StateSpace();
 	public static boolean isWhite;
+	private int[] oldMove = new int[6];
 	
 	
 	// TODO: add object to communicate received game moves with (can be through
@@ -216,6 +217,7 @@ public class ServerCommunicator extends GamePlayer implements SendMoveCallback {
 private boolean moveHasAlreadyBeenMade(int[] start, int[] end, int[] arrow) {
 		if (oldMove[0] == start[0] && oldMove[1] == start[1] && oldMove[2] == end[0] && oldMove[3] == end[1]
 				&& oldMove[4] == arrow[0] && oldMove[5] == arrow[1]) {
+			System.out.println("A duplicate move has been attempted");
 			return true;
 		} else {
 			oldMove[0] = start[0];
