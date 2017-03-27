@@ -55,6 +55,7 @@ public class Heuristic {
 		return -moveCounting(n, !n.isBlack());
 	}
 	
+	
 	/**
 	 * Heuristic based on http://www.yorgalily.org/amazons/heuristics.html "Move Counting"
 	 * @param n Node
@@ -70,6 +71,9 @@ public class Heuristic {
 		if (isBlack) { // assume AI is black...
 			
 			queens = board.getBlackQueens();
+			for (int i=0; i < queens.length; i++) {
+				System.out.println(queens[i]);
+			}
 			
 		} else { // else if AI is white
 			

@@ -74,7 +74,7 @@ public class ServerCommunicator extends GamePlayer implements SendMoveCallback {
 		
 		// TODO: Replace the 6 with a method that gets the room number from
 		// somewhere
-		this.gameClient.joinRoom(rooms.get(8)); // CHANGE ROOM HERE <<<<<<<<<<<<<<<<<<<<--------------------------------------------------------------------------
+		this.gameClient.joinRoom(rooms.get(5)); // CHANGE ROOM HERE <<<<<<<<<<<<<<<<<<<<--------------------------------------------------------------------------
 		System.out.println("logged in");
 	}
 
@@ -92,11 +92,11 @@ public class ServerCommunicator extends GamePlayer implements SendMoveCallback {
 			// move
 			if (this.userName.equals(blackPlayerUserName)) {
 				// then we are black
-				this.isWhite = false;
+				isWhite = false;
 				System.out.println("WE ARE LACKKK");
 			} else {
 				// we are white
-				this.isWhite = true;
+				isWhite = true;
 				System.out.println("WE ARE WHITE");
 				// make the first move
 				ai.State s = new ai.State(this.boardGUI.getGame().getBoard());

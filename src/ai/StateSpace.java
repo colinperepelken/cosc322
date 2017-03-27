@@ -73,16 +73,21 @@ public class StateSpace {
 		// add all of the seeds successor nodes to the state space
 		for (Action action : parentActions) {
 			// get the successor state for that action
-			child = new Node(parentState.getSuccessorState(action));
+			child = new Node(parentState.getSuccessorState(action, !new Node(parentState).isBlack()));
 
 			// keep a pointer to the
 //			if (turnCounter < 25) {
 //				movesAvailable = Heuristic.enemyMoveCounting(child);
+//
 //			} else {
+//		
 //				movesAvailable = Heuristic.moveCounting(child, child.isBlack());
 //			}
-			movesAvailable = Heuristic.moveCounting(child, child.isBlack()) + Heuristic.enemyMoveCounting(child);
+			movesAvailable = Heuristic.enemyMoveCounting(child) + Heuristic.moveCounting(child, child.isBlack())/2;
+			//movesAvailable = Heuristic.moveCounting(child, child.isBlack()) + Heuristic.enemyMoveCounting(child);
 			if (movesAvailable > maxMoves) {
+				System.out.println("new max: " + movesAvailable);
+				System.out.println("isBlack == " + child.isBlack());
 				maxMoves = movesAvailable;
 				this.maxUtilityNode = new Node(seed, action, child.getState());
 			}
