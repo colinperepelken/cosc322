@@ -76,11 +76,12 @@ public class StateSpace {
 			child = new Node(parentState.getSuccessorState(action));
 
 			// keep a pointer to the
-			if (turnCounter < 25) {
-				movesAvailable = Heuristic.enemyMoveCounting(child);
-			} else {
-				movesAvailable = Heuristic.moveCounting(child, child.isBlack());
-			}
+//			if (turnCounter < 25) {
+//				movesAvailable = Heuristic.enemyMoveCounting(child);
+//			} else {
+//				movesAvailable = Heuristic.moveCounting(child, child.isBlack());
+//			}
+			movesAvailable = Heuristic.moveCounting(child, child.isBlack()) + Heuristic.enemyMoveCounting(child);
 			if (movesAvailable > maxMoves) {
 				maxMoves = movesAvailable;
 				this.maxUtilityNode = new Node(seed, action, child.getState());
