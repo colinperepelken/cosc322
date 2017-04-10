@@ -72,9 +72,7 @@ public class ServerCommunicator extends GamePlayer implements SendMoveCallback {
 		// rooms
 		ArrayList<String> rooms = (ArrayList<String>) listRooms();
 		
-		// TODO: Replace the 6 with a method that gets the room number from
-		// somewhere
-		this.gameClient.joinRoom(rooms.get(5)); // CHANGE ROOM HERE <<<<<<<<<<<<<<<<<<<<--------------------------------------------------------------------------
+		this.gameClient.joinRoom(rooms.get(1)); // CHANGE ROOM HERE 
 		System.out.println("logged in");
 	}
 
@@ -82,14 +80,12 @@ public class ServerCommunicator extends GamePlayer implements SendMoveCallback {
 	public boolean handleGameMessage(String messageType, Map<String, Object> msgDetails) {
 		System.out.println("OnHandleGameMessage");
 		if (messageType.equals(GameMessage.GAME_ACTION_START)) { // GAME IS STARTING
-			// TODO: Find a way to pass which player is which into the boardGUI
 			// Class
 			blackPlayerUserName = (String) msgDetails.get(AmazonsGameMessage.PLAYER_BLACK);
 			whitePlayerUserName = (String) msgDetails.get(AmazonsGameMessage.PLAYER_WHITE);
 			System.out.println(whitePlayerUserName);
 			System.out.println(blackPlayerUserName);
-			// TODO: if chosen to be first moving player (check color), make
-			// move
+			// if chosen to be first moving player (check color), make move
 			if (this.userName.equals(blackPlayerUserName)) {
 				// then we are black
 				isWhite = false;
@@ -135,12 +131,12 @@ public class ServerCommunicator extends GamePlayer implements SendMoveCallback {
 		
 		this.boardGUI.makeMove(startQueenPosition, endQueenPosition, arrowPosition, this.boardGUI.getGame());
 		try {
-			Thread.sleep(3000);
+			Thread.sleep(25000);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		this.action = this.stateSpace.searchForNextActionQuickly(new State(this.boardGUI.game.getBoard()));
+		this.action = this.stateSpace.searchForNextAction(new State(this.boardGUI.game.getBoard()));
 		
 		if(this.action == null) {
 			System.exit(0);
@@ -156,9 +152,6 @@ public class ServerCommunicator extends GamePlayer implements SendMoveCallback {
 		this.boardGUI.makeMove(startQueenPosition, endQueenPosition, arrowPosition, this.boardGUI.getGame());
 
 		playerMove(this.action.getQueenStartIndex(), this.action.getQueenEndIndex(), this.action.getArrowIndex());
-		
-		// TODO: use object to communicate received game moves with (can be
-		// through interface)
 	}
 
 	/**
@@ -202,7 +195,6 @@ public class ServerCommunicator extends GamePlayer implements SendMoveCallback {
 		System.out.println(qf[0] + "," + qf[1] +  " " + qn[0] + "," + qn[1] + " " + ar[0] + "," + ar[1]);
 		
 		// To send a move message, call this method with the required data
-		
 		sendMove(qf, qn, ar);
 	}
 
@@ -213,10 +205,6 @@ public class ServerCommunicator extends GamePlayer implements SendMoveCallback {
 
 	public List<String> listRooms() {
 		List<String> rooms = gameClient.getRoomList();
-		/*for (String room : rooms) {
-			System.out.println(room);
-		}*/
-
 		return rooms;
 	}
 private boolean moveHasAlreadyBeenMade(int[] start, int[] end, int[] arrow) {
@@ -235,8 +223,10 @@ private boolean moveHasAlreadyBeenMade(int[] start, int[] end, int[] arrow) {
 		}
 
 	}
-	// TODO: will have to be called when a move is made (through callback)
+	
+	// Send move to server
 	public void sendMove(int[] queenPosCurrent, int[] queenPosNew, int[] arrowPos) {
+		// Handle condition when repeated move being sent due to threading lags
 		if (moveHasAlreadyBeenMade(queenPosCurrent, queenPosNew, arrowPos) == false) {
 			gameClient.sendMoveMessage(queenPosCurrent, queenPosNew, arrowPos);
 		}

@@ -41,7 +41,7 @@ public class Action {
 				Board.getRow(arrowIndex), Board.getColumn(arrowIndex));
 	}
 	
-	//////// getters
+	// getters
 	
 	public int getQueenStartIndex() {
 		return queenStartIndex;

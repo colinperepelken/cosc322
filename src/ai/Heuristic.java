@@ -19,7 +19,7 @@ public class Heuristic {
 		int[] queens;
 		
 		boolean isBlack = n.isBlack();
-		if(isBlack) { // should come up with something better... check if node is black player
+		if(isBlack) { 
 			queens = board.getBlackQueens();
 			
 		} else {
@@ -28,11 +28,9 @@ public class Heuristic {
 		
 		// iterate over all queens
 		for(int q: queens) {
-			// need to expand the space as far down as possible and find the most owned branch
-			
+			// NOT YET IMPLEMENTED
 		}
 		
-		// TODO: IMPLEMENTATION HERE 
 		return h;
 	}
 	

@@ -129,7 +129,6 @@ public class Board {
 
 	}
 	
-
 	// Creates a printable version of the board (10 row paragraph string)
 	public String toString() {
 		StringBuilder boardState = new StringBuilder();

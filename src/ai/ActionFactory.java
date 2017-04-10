@@ -12,10 +12,6 @@ public class ActionFactory {
 	public static ArrayList<Action> getActions(Node node, boolean isBlack) {
 		State state = node.getState();
 		ArrayList<Action> actions = new ArrayList<Action>();
-		// for every queen (of a player?)
-			// for every valid queen move
-				// for every valid arrow shot
-					// actions.add(   )
 		Board board = state.getBoard(); // get the board object of the state
 		
 		int[] queens; // array of queens
@@ -48,10 +44,6 @@ public class ActionFactory {
 	public static ArrayList<Action> getActions(Node node) {
 		State state = node.getState();
 		ArrayList<Action> actions = new ArrayList<Action>();
-		// for every queen (of a player?)
-			// for every valid queen move
-				// for every valid arrow shot
-					// actions.add(   )
 		Board board = state.getBoard(); // get the board object of the state
 		
 		int[] queens; // array of queens

@@ -34,10 +34,4 @@ public class BoardTest {
 	public void testGetIndex() {
 		assertEquals(59, Board.getIndex(5, 9));
 	}
-	
-//	@Test
-//	public void testIsValidQueenMove() {
-//		assertEquals(true, Board.isValidQueenMove(2, 35));
-//		assertEquals(false, Board.isValidQueenMove(5, 64));
-//	}
 }

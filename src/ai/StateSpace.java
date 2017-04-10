@@ -3,7 +3,7 @@ package ai;
 import java.util.ArrayList;
 
 public class StateSpace {
-	private Node maxUtilityNode;
+	private Node maxUtilityNode;	
 	private int bestDepth = Integer.MAX_VALUE;
 	private int alpha = 0;
 	private int beta = 0;
@@ -74,15 +74,6 @@ public class StateSpace {
 		for (Action action : parentActions) {
 			// get the successor state for that action
 			child = new Node(parentState.getSuccessorState(action, !new Node(parentState).isBlack()));
-
-			// keep a pointer to the
-//			if (turnCounter < 25) {
-//				movesAvailable = Heuristic.enemyMoveCounting(child);
-//
-//			} else {
-//		
-//				movesAvailable = Heuristic.moveCounting(child, child.isBlack());
-//			}
 			movesAvailable = Heuristic.enemyMoveCounting(child) + Heuristic.moveCounting(child, child.isBlack())/2;
 			//movesAvailable = Heuristic.moveCounting(child, child.isBlack()) + Heuristic.enemyMoveCounting(child);
 			if (movesAvailable > maxMoves) {
@@ -99,48 +90,33 @@ public class StateSpace {
 	// Recursively generate the state space rooted at the seed node
 	public void generateChildNodes(Node seed, int currentDepth) {
 		State parentState = seed.getState();
-
+		int depthBound = (turnCounter < 35) ? 3 : 3;
+		
+		if (currentDepth > depthBound) {
+			return;
+		}
+		
 		ArrayList<Action> parentActions = ActionFactory.getActions(seed);
-		State childState;
+		Node child;
+		int movesAvailable = Integer.MIN_VALUE;
+		int maxMoves = Integer.MIN_VALUE;
 
 		if (parentActions.size() > 0) {
 			// add all of the seeds successor nodes to the state space
 			for (Action parentAction : parentActions) {
 				// get the successor state for that action
-				childState = parentState.getSuccessorState(parentAction);
-
-				/*
-				 * add a new node to the state space containing of the outcome
-				 * of this action on the arrangement
-				 */
-				// currently using the depth as a evaluation function for
-				// pruning
-				if (currentDepth < this.bestDepth && currentDepth < 5) {
-					Node newSeed = new Node(seed, parentAction, childState);
-
-					// currently just finding the node with the most actions
-					// available below depth limit
-					// as starting point for backtracking
-					int numActions = Heuristic.enemyMoveCounting(newSeed);
-					if (newSeed.isWhite() && numActions > this.alpha) {
-						this.alpha = numActions;
-						this.maxUtilityNode = newSeed;
-					}
-					
-					generateChildNodes(newSeed, ++currentDepth);
+				child = new Node(parentState.getSuccessorState(parentAction, !new Node(parentState).isBlack()));
+				movesAvailable = Heuristic.enemyMoveCounting(child) + Heuristic.moveCounting(child, child.isBlack())/2;
+				//movesAvailable = Heuristic.moveCounting(child, child.isBlack()) + Heuristic.enemyMoveCounting(child);
+				if (movesAvailable > maxMoves) {
+					System.out.println("new max: " + movesAvailable);
+					System.out.println("isBlack == " + child.isBlack());
+					maxMoves = movesAvailable;
+					this.maxUtilityNode = new Node(seed, parentAction, child.getState());
+					generateChildNodes(child, ++currentDepth);
 				}
 			}
-		} else {
-			// case we have hit a terminal node - no actions possible
-			// TODO set the max utility node for athis class if the eval is
-			// better
-			// currently just using depth as heuristic
-			if (currentDepth < bestDepth && seed.isBlack()) {
-				// case the opponent cannot move
-				this.bestDepth = currentDepth;
-				this.maxUtilityNode = seed;
-			}
-		}
+		} 
 	}
 
 }

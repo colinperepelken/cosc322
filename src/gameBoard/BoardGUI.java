@@ -70,31 +70,17 @@ public class BoardGUI extends Application {
 			Task<Void> AIComputationTask = new Task<Void>() {
 				@Override
 				public Void call() {
-					// This will create a new thread for the AI computations so
-					// that the UI
-					// Doesn't completely freeze up.
-					// ====================================================================================================
-					// THE AI STUFF WILL GO HERE
-					// ITs RESULTS SHOULD BE PASSED TO THE makeMove(int
-					// startPos, int endPos, int arrowTarget)
-					// IT SHOULD WORK JUST FINE HOWEVER IF SOMEONE MAKES A MOVE
-					// USING THE MOUSE IT WILL BUGGER THINGS UP
-					// MIGHT ADD A "Human vs Human or Human vs AI" Thing at some
-					// point to combat this
-					// Note Make a Move auto-switches between who is making the
-					// move White then Black then White
-					// so for AI vs AI there has to be something to see who is
-					// sending the move and then maybe reject passing
-					// the move to the makeMove method.
-					// ====================================================================================================
-
-					// Results of the AI Calculations should be put into this
-					// arraw
-					// bestMove[0] = queenToMove;
-					// bestMove[1] = targetSquare;
-					// bestMove[2] = arrowSquare;
-					
-					// 
+					 /*This will create a new thread for the AI computations so
+					 that the UI
+					 Doesn't completely freeze up.
+					 ====================================================================================================
+					 Note Make a Move auto-switches between who is making the
+					 move White then Black then White
+					 so for AI vs AI there has to be something to see who is
+					 sending the move and then maybe reject passing
+					 the move to the makeMove method.
+					 ====================================================================================================
+					  */
 					
 					moveCalcFinished = true;
 
@@ -252,14 +238,6 @@ public class BoardGUI extends Application {
 				if (success == true) {
 					currentGame.setTurnCount(currentGame.getTurnCount() + 1);
 					System.out.println(currentGame.getBoard().toString());
-					
-					// AI turn
-					//System.out.println("Computing AI move...");
-					//ai.State s = new ai.State(currentGame.getBoard());
-					//Action a = new StateSpace().searchForNextActionQuickly(s);
-					
-//					System.out.println(new StateSpace().searchForNextActionQuickly(new State(currentGame.getBoard())).toStringCoordinates());
-					//makeMove(a.getQueenStartIndex(), a.getQueenEndIndex(), a.getArrowIndex(), currentGame);
 				}
 
 				return null;
@@ -389,12 +367,6 @@ public class BoardGUI extends Application {
 
 	// This method basically replaces the main method
 	public void start(Stage primaryStage) {
-		
-		//TODO: Wrap the server connection in a thread?
-		// gets the connection to the server
-		//ServerCom connection = new ServerCom("jaredhw", "hunter2");  
-		
-				
 		// Resets the board to a new game (Can be used to set players as AI or not)
 		game currentGame = new game(true, true);
 		// Resets the internal board game datastructure to a new game
