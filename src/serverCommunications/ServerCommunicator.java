@@ -89,7 +89,7 @@ public class ServerCommunicator extends GamePlayer implements SendMoveCallback {
 			if (this.userName.equals(blackPlayerUserName)) {
 				// then we are black
 				isWhite = false;
-				System.out.println("WE ARE LACKKK");
+				System.out.println("WE ARE BLACK");
 			} else {
 				// we are white
 				isWhite = true;
